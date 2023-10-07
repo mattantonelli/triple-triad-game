@@ -16,23 +16,24 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${inter.className} ${xivFont.className}`}>
-        <div className="container-fluid">
-          <header>
-            <nav className="navbar navbar-expand">
-              <div className="container">
-                <Link href="/" className="navbar-brand">
-                  <Image src="/images/logo.png" width="40" height="40" alt="Logo" />
-                  <span>Triple Triad</span>
-                </Link>
-                <div className="collapse navbar-collapse">
-                  <div className="navbar-nav">
-                    <Link href="#" className="nav-link">Play</Link>
-                    <Link href="#" className="nav-link">Decks</Link>
-                  </div>
+        <header>
+          <nav className="navbar navbar-expand">
+            <div className="container">
+              <Link href="/" className="navbar-brand">
+                <Image src="/images/logo.png" width="40" height="40" alt="Logo" />
+                <span>Triple Triad</span>
+              </Link>
+              <div className="collapse navbar-collapse">
+                <div className="navbar-nav">
+                  <Link href="#" className="nav-link">Play</Link>
+                  <Link href="/cards" className="nav-link">Cards</Link>
+                  <Link href="#" className="nav-link">Decks</Link>
                 </div>
               </div>
-            </nav>
-          </header>
+            </div>
+          </nav>
+        </header>
+        <div className="container-fluid">
           <main className="mt-3">{children}</main>
         </div>
       </body>

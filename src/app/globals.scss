@@ -21,6 +21,14 @@ header {
     }
 }
 
-.container-fluid {
-  padding: 0;
+.form-select {
+  width: auto;
+  background-color: #efefef;
+  margin: 0 0.5rem;
+}
+
+.card-large {
+  width: 104px;
+  height: 128px;
+  background: url("/images/cards.png") no-repeat;
 }
