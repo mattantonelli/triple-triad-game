@@ -1,0 +1,26 @@
+@import "bootstrap/scss/bootstrap.scss";
+
+body {
+  background-color: #333;
+  color: #cdcdcd;
+  font-family: sans-serif;
+}
+
+header {
+  background-color: #555;
+}
+.navbar {
+  padding: 0;
+}
+
+.navbar-brand, .nav-link {
+    color: #cdcdcd;
+
+    &:hover, &:active, &:focus {
+      color: #efefef;
+    }
+}
+
+.container-fluid {
+  padding: 0;
+}
