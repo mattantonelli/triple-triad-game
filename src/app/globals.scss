@@ -9,26 +9,21 @@ body {
 header {
   background-color: #555;
 }
+
 .navbar {
   padding: 0;
 }
 
 .navbar-brand, .nav-link {
-    color: #cdcdcd;
+  color: #cdcdcd;
 
-    &:hover, &:active, &:focus {
-      color: #efefef;
-    }
+  &:hover, &:active, &:focus {
+    color: #efefef;
+  }
 }
 
 .form-select {
   width: auto;
   background-color: #efefef;
   margin: 0 0.5rem;
-}
-
-.card-large {
-  width: 104px;
-  height: 128px;
-  background: url("/images/cards.png") no-repeat;
 }
