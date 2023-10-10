@@ -1,13 +1,14 @@
 @import "bootstrap/scss/bootstrap.scss";
 
 body {
-  background-color: #333;
-  color: #cdcdcd;
+  background: linear-gradient(#393939, #313131);
+  color: #fff;
   font-family: sans-serif;
+  min-height: 100vh;
 }
 
 header {
-  background-color: #555;
+  background: linear-gradient(#606060, #3f3f3f);
 }
 
 .navbar {
@@ -15,14 +16,14 @@ header {
 }
 
 .navbar-brand, .nav-link {
-  color: #cdcdcd;
+  color: #ddd;
 
   &:hover, &:active, &:focus {
-    color: #efefef;
+    color: #fff;
   }
 }
 
-.form-select {
+.form-select, .form-control {
   width: auto;
   background-color: #efefef;
   margin: 0 0.5rem;
