@@ -1,6 +1,6 @@
 "use client";
 
-import Card from "@/components/card";
+import Card from "@/components/cards/card";
 import CardFilters from "./cardFilters";
 import { useEffect, useState } from "react";
 
