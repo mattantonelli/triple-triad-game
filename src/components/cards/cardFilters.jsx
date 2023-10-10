@@ -23,12 +23,19 @@ export default function CardFilters({ cards, setCards }) {
       filteredCards = filteredCards.filter((card) => card.type.name == filters.type);
     }
 
+    if (filters.name) {
+      filteredCards = filteredCards.filter((card) => card.name.toLowerCase().includes(filters.name.toLowerCase()));
+    }
+
     setCards(filteredCards);
   }
 
   return (
     <form>
       <div className="d-flex flex-inline">
+        <div>
+          <input type="text" className="form-control" placeholder="Name" onChange={e => setFilter('name', e.target.value)} />
+        </div>
         <select className="form-select" onChange={e => setFilter('stars', e.target.value)}>
           <option value="">All Stars</option>
           {[1, 2, 3, 4, 5].map((value) => {

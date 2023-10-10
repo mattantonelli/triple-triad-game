@@ -27,6 +27,7 @@ export default function RootLayout({ children }) {
                 <div className="navbar-nav">
                   <Link href="#" className="nav-link">Play</Link>
                   <Link href="/cards" className="nav-link">Cards</Link>
+                  <Link href="/npcs" className="nav-link">NPCs</Link>
                   <Link href="#" className="nav-link">Decks</Link>
                 </div>
               </div>
