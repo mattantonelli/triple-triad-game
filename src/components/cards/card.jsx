@@ -7,5 +7,5 @@ export default function Card({ card }) {
   return (
     <img src="/images/blank.png" alt={`${card.name} (${stats})`} title={card.name}
       className={styles.card} style={{backgroundPosition: `-${(card.id - 1) * 104}px 0`}} />
-  )
+  );
 }

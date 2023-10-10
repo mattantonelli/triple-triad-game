@@ -1,16 +1,16 @@
-import './globals.scss'
-import { Inter } from 'next/font/google'
-import Link from 'next/link'
-import localFont from 'next/font/local'
-import Image from 'next/image'
+import "./globals.scss";
+import { Inter } from "next/font/google";
+import Link from "next/link";
+import localFont from "next/font/local";
+import Image from "next/image";
 
-const inter = Inter({ subsets: ['latin'] })
-const xivFont = localFont({ src: '../../public/fonts/XIV_ASAS_R.otf' })
+const inter = Inter({ subsets: ['latin'] });
+const xivFont = localFont({ src: '../../public/fonts/XIV_ASAS_R.otf' });
 
 export const metadata = {
   title: 'Triple Triad',
   description: 'Play Triple Triad in your web browser.',
-}
+};
 
 export default function RootLayout({ children }) {
   return (
@@ -39,5 +39,5 @@ export default function RootLayout({ children }) {
         </div>
       </body>
     </html>
-  )
+  );
 }

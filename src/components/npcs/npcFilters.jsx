@@ -35,10 +35,10 @@ export default function NPCFilters({ npcs, setNpcs, rules }) {
         <select className="form-select" onChange={e => setFilter('rule', e.target.value)}>
           <option value="">All Rules</option>
           {rules.map((value) => {
-            return <option key={value} value={value}>{value}</option>
+            return <option key={value} value={value}>{value}</option>;
           })}
         </select>
       </div>
     </form>
-  )
+  );
 }

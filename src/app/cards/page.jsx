@@ -7,5 +7,5 @@ export default function Cards() {
         <CardList />
       </div>
     </div>
-  )
+  );
 }

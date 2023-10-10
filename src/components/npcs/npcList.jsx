@@ -38,5 +38,5 @@ export default function NPCList() {
         {npcs.map((npc) => <NPC key={npc.id} npc={npc} />)}
       </div>
     </>
-  )
+  );
 }

@@ -26,5 +26,5 @@ export default function CardList() {
         { cards.map((card) => <Card key={card.id} card={card} />) }
       </div>
     </>
-  )
+  );
 }

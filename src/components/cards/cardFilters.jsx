@@ -66,5 +66,5 @@ export default function CardFilters({ cards, setCards }) {
         })}
       </div>
   </form>
-  )
+  );
 }
