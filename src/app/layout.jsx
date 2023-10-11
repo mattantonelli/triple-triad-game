@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <header>
           <nav className="navbar navbar-expand shadow">
             <div className="container">
-              <Link href="/" className="navbar-brand">
+              <Link href="/play" className="navbar-brand">
                 <Image src="/images/logo.png" width="40" height="40" alt="Logo" />
                 <span>Triple Triad</span>
               </Link>
