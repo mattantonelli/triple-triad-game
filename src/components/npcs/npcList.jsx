@@ -14,13 +14,14 @@ export default function NPCList() {
   useEffect(() => {
     fetch(DATA_URL, { next: { revalidate: 86400 }})
       .then((res) => res.json())
-      .then((data) => {
-        setAllNpcs(data.results);
-        setNpcs(data.results);
+      .then((data) => data.results.sort((a, b) => a.name < b.name ? -1 : 0)) // Sort alphabetically
+      .then((npcs) => {
+        setAllNpcs(npcs);
+        setNpcs(npcs);
 
         // Create a set of unique rules available across all NPCs
         let rules = new Set();
-        data.results.forEach((npc) => npc.rules.forEach((rule) => rules.add(rule)));
+        npcs.forEach((npc) => npc.rules.forEach((rule) => rules.add(rule)));
         setRules([...rules].sort());
       });
   }, []);
