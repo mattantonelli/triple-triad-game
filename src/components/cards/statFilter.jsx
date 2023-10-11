@@ -1,10 +1,10 @@
 import styles from "./card.module.scss";
 
 const labels = {
-  "top": "↑",
-  "right": "→",
-  "bottom": "↓",
-  "left": "←"
+  top: "↑",
+  right: "→",
+  bottom: "↓",
+  left: "←"
 };
 
 export default function StatFilter({ direction, value, setFilter }) {

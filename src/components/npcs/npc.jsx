@@ -12,7 +12,7 @@ export default function NPC({ npc }) {
         <div className="card-body">
           <dl>
             <dt>Rules</dt>
-            <dd>{npc.rules.join(', ')}</dd>
+            <dd>{npc.rules.join(", ")}</dd>
 
             <dt>Fixed Cards</dt>
             <dd>

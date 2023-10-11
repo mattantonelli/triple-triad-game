@@ -4,8 +4,8 @@ import { useEffect, useState } from "react";
 import StatFilter from "./statFilter";
 
 const stars = [1, 2, 3, 4, 5];
-const types = ['Normal', 'Primal', 'Scion', 'Beastman', 'Garlean'];
-const directions = ['top', 'right', 'bottom', 'left'];
+const types = ["Normal", "Primal", "Scion", "Beastman", "Garlean"];
+const directions = ["top", "right", "bottom", "left"];
 const defaultFilters = { name: "", stars: "", type: "", top: 0, right: 0, bottom: 0, left: 0 };
 
 export default function CardFilters({ cards, setCards }) {

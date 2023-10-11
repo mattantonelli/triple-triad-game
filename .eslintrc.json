@@ -1,6 +1,8 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "semi": 1
+    "semi": 1,
+    "quotes": [1, "double"],
+    "quote-props": [1, "as-needed"]
   }
 }
