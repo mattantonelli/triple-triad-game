@@ -17,7 +17,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} ${xivFont.className}`}>
         <header>
-          <nav className="navbar navbar-expand">
+          <nav className="navbar navbar-expand shadow">
             <div className="container">
               <Link href="/" className="navbar-brand">
                 <Image src="/images/logo.png" width="40" height="40" alt="Logo" />
@@ -25,7 +25,7 @@ export default function RootLayout({ children }) {
               </Link>
               <div className="collapse navbar-collapse">
                 <div className="navbar-nav">
-                  <Link href="#" className="nav-link">Play</Link>
+                  <Link href="/play" className="nav-link">Play</Link>
                   <Link href="/cards" className="nav-link">Cards</Link>
                   <Link href="/npcs" className="nav-link">NPCs</Link>
                   <Link href="#" className="nav-link">Decks</Link>

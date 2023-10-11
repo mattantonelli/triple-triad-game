@@ -1,0 +1,16 @@
+.board {
+  width: 1122px;
+  height: 562px;
+  background-image: url("../../../public/images/board.png");
+}
+
+.deckSelect, .decks {
+  position: relative;
+  top: 130px;
+  left: 11px;
+  width: 1100px;
+}
+
+.decks {
+  margin-top: 1rem;
+}
