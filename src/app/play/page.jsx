@@ -70,8 +70,8 @@ export default function Play() {
       <div className={styles.board}>
         <DeckSelect decks={decks} selectDeck={selectDeck} />
         <div className={`d-flex justify-content-between ${styles.decks}`}>
-          <Deck cards={playerDecks.blue} />
-          <Deck cards={playerDecks.red} />
+          <Deck cards={playerDecks.blue} color="blue" />
+          <Deck cards={playerDecks.red} color="red" />
         </div>
       </div>
     </div>
