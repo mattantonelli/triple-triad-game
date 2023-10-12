@@ -1,11 +1,20 @@
-import Image from "next/image";
-import styles from "./styles.module.scss";
+import { useDrag } from "react-dnd";
+import Card from "@/components/cards/card";
 
-export default function PlayCard({ card, color, startDrag }) {
-  const image = color == "red" ? card.image_red : card.image_blue;
+export default function PlayCard({ card, color, draggable = true }) {
+  const [{ isDragging }, dragRef] = useDrag(() => ({
+    type: "card",
+    item: { card: card, color: color },
+    canDrag: draggable,
+    collect: monitor => ({
+      isDragging: !!monitor.isDragging(),
+    })
+  }));
 
   return (
-    <Image src={image} alt={card.name} className={styles.card} width="104" height="128"
-      onDragStart={(e) => startDrag(e)} draggable="true" />
+    <div ref={dragRef} style={{opacity: isDragging ? 0.5 : 1,
+      cursor: draggable ? "pointer" : "default"}}>
+      <Card card={card} color={color} />
+    </div>
   );
 }

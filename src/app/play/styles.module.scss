@@ -4,12 +4,6 @@
   background-image: url("../../../public/images/board.png");
 }
 
-.card {
-  margin: 0.2rem 0.1rem;
-  width: 104px;
-  height: 128px;
-}
-
 .deckSelect {
   position: relative;
   top: 130px;
@@ -33,9 +27,12 @@
   height: 408px;
 }
 
-.playSlot {
-  width: 104px;
-  height: 128px;
-  margin: 3px 16px;
+.playSquare {
+  width: 136px;
+  height: 136x;
   background-color: rgba(0, 0, 0, 0.1);
+
+  img {
+    margin: 4px 16px;
+  }
 }
