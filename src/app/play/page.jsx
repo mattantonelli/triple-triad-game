@@ -12,6 +12,7 @@ export default function Play() {
   const [decks, setDecks] = useState([]);
   const [cards, setCards] = useState([]);
   const [playerDecks, setPlayerDecks] = useState({ blue: [], red: [] });
+  const [draggedCard, setDraggedCard] = useState();
 
   function selectDeck(deck, color) {
     let newDecks = {...playerDecks};
@@ -65,13 +66,33 @@ export default function Play() {
     getDecks();
     }, []);
 
+    function startDrag(e) {
+      setDraggedCard(e.target);
+    }
+
+    function dragCard(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = "move";
+    }
+
+    function dropCard(e) {
+      e.preventDefault();
+      draggedCard.parentNode.removeChild(draggedCard);
+      e.target.appendChild(draggedCard);
+    }
+
   return (
     <div className="d-flex flex-column align-items-center">
       <div className={styles.board}>
+        <div className={`d-flex flex-wrap justify-content-center ${styles.playArea}`}>
+          {Array(9).fill().map((_, i) => {
+            return <div key={i} className={styles.playSlot} onDragOver={e => dragCard(e)} onDrop={e => dropCard(e)} />;
+          })}
+        </div>
         <DeckSelect decks={decks} selectDeck={selectDeck} />
         <div className={`d-flex justify-content-between ${styles.decks}`}>
-          <Deck cards={playerDecks.blue} color="blue" />
-          <Deck cards={playerDecks.red} color="red" />
+          <Deck cards={playerDecks.blue} color="blue" startDrag={startDrag} />
+          <Deck cards={playerDecks.red} color="red" startDrag={startDrag} />
         </div>
       </div>
     </div>
