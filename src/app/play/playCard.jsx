@@ -10,7 +10,7 @@ export default function PlayCard({ card, color, isDraggable, isVisible }) {
     collect: monitor => ({
       isDragging: !!monitor.isDragging(),
     })
-  }));
+  }), [isDraggable]);
 
   return (
     <div className={styles.playCard} ref={dragRef}
