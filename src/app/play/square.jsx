@@ -7,10 +7,10 @@ export default function Square({ playCard }) {
   const [card, setCard] = useState();
   const [color, setColor] = useState();
 
-  function placeCard(card, color) {
-    setCard(card);
+  function placeCard(placedCard, color) {
+    setCard(placedCard);
     setColor(color);
-    playCard(card, color);
+    playCard(placedCard, color);
   }
 
   const [{ isOver }, dropRef] = useDrop(() => ({
