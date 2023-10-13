@@ -4,9 +4,8 @@ import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./styles.module.scss";
-import DeckSelect from "./deckSelect";
-import Deck from "./deck";
-import PlaySquare from "./playSquare";
+import Player from "./player";
+import Board from "./board";
 
 const CARD_DATA_URL = "https://triad.raelys.com/api/cards";
 const DECK_DATA_URL = "https://triad.raelys.com/api/npcs?deck=1";
@@ -14,13 +13,7 @@ const DECK_DATA_URL = "https://triad.raelys.com/api/npcs?deck=1";
 export default function Play() {
   const [decks, setDecks] = useState([]);
   const [cards, setCards] = useState([]);
-  const [playerDecks, setPlayerDecks] = useState({ blue: [], red: [] });
-
-  function selectDeck(deck, color) {
-    let newDecks = {...playerDecks};
-    newDecks[color] = deck.split(",").map((id) => cards[id]);
-    setPlayerDecks(newDecks);
-  }
+  const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
 
   useEffect(() => {
     function getCards() {
@@ -68,21 +61,18 @@ export default function Play() {
     getDecks();
     }, []);
 
+    function playCard(card, color) {
+      let newCards = {...playedCards};
+      newCards[color].push(card);
+      setPlayedCards(newCards);
+    }
+
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className="d-flex flex-column align-items-center">
-        <div className={styles.board}>
-          <div className={`d-flex flex-wrap justify-content-center ${styles.playArea}`}>
-            {Array(9).fill().map((_, i) => {
-              return <PlaySquare key={i} />;
-            })}
-          </div>
-          <DeckSelect decks={decks} selectDeck={selectDeck} />
-          <div className={`d-flex justify-content-between ${styles.decks}`}>
-            <Deck cards={playerDecks.blue} color="blue" />
-            <Deck cards={playerDecks.red} color="red" />
-          </div>
-        </div>
+      <div className={`d-flex ${styles.gameMat} mx-auto`}>
+        <Player allCards={cards} playedCards={playedCards.blue} decks={decks} color="blue" />
+        <Board playCard={playCard} />
+        <Player allCards={cards} playedCards={playedCards.red} decks={decks} color="red" />
       </div>
     </DndProvider>
   );

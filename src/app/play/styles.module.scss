@@ -1,36 +1,28 @@
-.board {
+.gameMat {
   width: 1122px;
   height: 562px;
+  padding: 44px 12px;
   background-image: url("../../../public/images/board.png");
 }
 
-.deckSelect {
-  position: relative;
-  top: 130px;
-  left: 11px;
-  width: 1100px;
+.player {
+  width: 342px;
+  height: 474px;
+
+  select {
+    margin-top: 90px;
+  }
 }
 
-.decks {
-  position: relative;
-  top: 130px;
-  left: 18px;
-  width: 1085px;
-  margin-top: 1rem;
-}
-
-.playArea {
-  position: absolute;
-  left: 756px;
-  top: 143px;
-  width: 408px;
-  height: 408px;
+.board {
+  width: 438px;
+  height: 474px;
+  padding: 32px 10px;
 }
 
 .playSquare {
   width: 136px;
-  height: 136x;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: 136px;
 
   img {
     margin: 4px 16px;
