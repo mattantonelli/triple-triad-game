@@ -61,7 +61,7 @@ export default function Play() {
     getDecks();
     }, []);
 
-    function playCard(card, color) {
+    function playFromHand(card, color) {
       let newCards = {...playedCards};
       newCards[color].push(card);
       setPlayedCards(newCards);
@@ -71,7 +71,7 @@ export default function Play() {
     <DndProvider backend={HTML5Backend}>
       <div className={`d-flex ${styles.gameMat} mx-auto`}>
         <Player allCards={cards} playedCards={playedCards.blue} decks={decks} color="blue" />
-        <Board playCard={playCard} />
+        <Board playFromHand={playFromHand} />
         <Player allCards={cards} playedCards={playedCards.red} decks={decks} color="red" />
       </div>
     </DndProvider>
