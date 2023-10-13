@@ -36,3 +36,8 @@
     margin: 4px 16px;
   }
 }
+
+.playCard {
+  // Fix background rendering issue on drag
+  transform: translate(0, 0);
+}

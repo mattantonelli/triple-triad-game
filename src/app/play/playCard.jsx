@@ -1,5 +1,6 @@
 import { useDrag } from "react-dnd";
 import Card from "@/components/cards/card";
+import styles from "./styles.module.scss";
 
 export default function PlayCard({ card, color, draggable = true }) {
   const [{ isDragging }, dragRef] = useDrag(() => ({
@@ -12,8 +13,8 @@ export default function PlayCard({ card, color, draggable = true }) {
   }));
 
   return (
-    <div ref={dragRef} style={{opacity: isDragging ? 0.5 : 1,
-      cursor: draggable ? "pointer" : "default"}}>
+    <div className={styles.playCard} ref={dragRef}
+      style={{opacity: isDragging ? 0.5 : 1, cursor: draggable ? "pointer" : "default"}}>
       <Card card={card} color={color} />
     </div>
   );
