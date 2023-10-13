@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import styles from "./card.module.scss";
 
-export default function Card({ card, color }) {
+export default function Card({ card, color, tooltip = true }) {
   const stats = Object.values(card.stats.formatted).join(" ");
 
   // If a color is provided, add the colored card class. Otherwise, render without color.
@@ -13,7 +13,7 @@ export default function Card({ card, color }) {
   }
 
   return (
-    <img src="/images/blank.png" alt={`${card.name} (${stats})`} title={card.name}
+    <img src="/images/blank.png" alt={`${card.name} (${stats})`} title={tooltip ? card.name : null}
       className={className} style={{backgroundPosition: `-${(card.id - 1) * 104}px 0`}} />
   );
 }
