@@ -2,7 +2,7 @@ import { useState } from "react";
 import PlayCard from "./playCard";
 import styles from "./styles.module.scss";
 
-export default function Player({ allCards, playedCards, decks, currentPlayer, color }) {
+export default function Player({ allCards, playedCards, decks, currentPlayer, currentTurn, color }) {
   const [cards, setCards] = useState([]);
 
   function selectDeck(selected) {
@@ -14,9 +14,17 @@ export default function Player({ allCards, playedCards, decks, currentPlayer, co
     return playedCards.map((card) => card.id).includes(card.id);
   }
 
+  function isPlayerTurn() {
+    return currentPlayer === color;
+  }
+
+  function isPlayStarted() {
+    return currentTurn > 1;
+  }
+
   return (
     <div className={`d-flex flex-column ${styles.player}`}>
-      <select className="form-select" key={color} onChange={e => selectDeck(e.target.value)}>
+      <select className="form-select" key={color} onChange={e => selectDeck(e.target.value)} disabled={isPlayStarted()}>
         <option value="">Select a deck</option>
         {decks.map((deck, i) => {
           return <option key={i} value={deck.cards}>{deck.name}</option>;
@@ -27,7 +35,7 @@ export default function Player({ allCards, playedCards, decks, currentPlayer, co
         {cards.map((card) => {
           const isPlayed = isCardPlayed(card);
           return <PlayCard key={card.id} card={card} color={color} isVisible={!isPlayed}
-            isDraggable={!isPlayed && currentPlayer === color } />;
+            isDraggable={!isPlayed && isPlayerTurn() } />;
         })}
       </div>
     </div>

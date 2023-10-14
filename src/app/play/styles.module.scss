@@ -32,6 +32,11 @@
 .player {
   width: 342px;
   height: 372px;
+
+  select {
+    margin: 0 auto;
+    max-width: 300px;
+  }
 }
 
 .blueTurn {

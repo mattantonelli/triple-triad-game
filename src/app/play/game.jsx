@@ -107,7 +107,7 @@ export default function Game({ cards, decks }) {
 
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} allCards={cards} playedCards={playedCards[color]} decks={decks}
-      currentPlayer={currentPlayer()} color={color} />;
+      currentPlayer={currentPlayer()} currentTurn={turn} color={color} />;
   });
 
   return (
