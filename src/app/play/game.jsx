@@ -6,6 +6,8 @@ import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./styles.module.scss";
 import Player from "./player";
 import Board from "./board";
+import Score from "./score";
+import Controls from "./controls";
 
 // Returns a list of adjacent indexes for checking flips.
 // 0 1 2
@@ -30,6 +32,7 @@ function indexToCoordinates(index) {
 
 export default function Game({ cards, decks }) {
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
+  const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
@@ -57,8 +60,11 @@ export default function Game({ cards, decks }) {
 
   // Checks a card's neighbors to see if they can be flipped
   function checkFlips(newSquares, card, color, index) {
+    let newScores = {...scores};
+
     adjacentIndexes[index].forEach((neighborIndex) => {
       const neighbor = newSquares[neighborIndex];
+
       if (neighbor.color && neighbor.color !== color) {
         // Translate the square indexes into usable coordinates to determine sides
         const [x1, y1] = indexToCoordinates(index);
@@ -66,29 +72,42 @@ export default function Game({ cards, decks }) {
 
         // Based on the relative position of the squares, check if the placed card's
         // stats exceeds that of its neighbor
+        const stats = card.stats.numeric;
+        const neighborStats = neighbor.card.stats.numeric;
+
         if (
-          (x1 > x2 && card.stats.numeric.left > neighbor.card.stats.numeric.right) ||
-          (x1 < x2 && card.stats.numeric.right > neighbor.card.stats.numeric.left) ||
-          (y1 > y2 && card.stats.numeric.top > neighbor.card.stats.numeric.bottom) ||
-          (y1 < y2 && card.stats.numeric.bottom > neighbor.card.stats.numeric.top)
+          (x1 > x2 && stats.left   > neighborStats.right)  ||
+          (x1 < x2 && stats.right  > neighborStats.left)   ||
+          (y1 > y2 && stats.top    > neighborStats.bottom) ||
+          (y1 < y2 && stats.bottom > neighborStats.top)
         ) {
           // If so, flip the neighbor's color
-          newSquares[neighborIndex].color = color;
+          const neighborColor = neighbor.color;
+          neighbor.color = color;
+
+          // and update the scores
+          newScores[color] += 1;
+          newScores[neighborColor] -= 1;
         }
       }
     });
 
+    setScores(newScores);
     return newSquares;
   }
 
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
-      {/* TODO: Render status (# flipped cards) here. Reduce height of Player component to compensate. */}
-      <Player allCards={cards} playedCards={playedCards.blue} decks={decks} color="blue" />
+      <div className="d-flex flex-column">
+        <Score scores={scores} />
+        <Player allCards={cards} playedCards={playedCards.blue} decks={decks} color="blue" />
+      </div>
       <Board squares={squares} playCard={playCard} />
-      {/* TODO: Render buttons like Reset here, same height as the status component. */}
-      <Player allCards={cards} playedCards={playedCards.red} decks={decks} color="red" />
+      <div className="d-flex flex-column">
+        <Controls />
+        <Player allCards={cards} playedCards={playedCards.red} decks={decks} color="red" />
+      </div>
     </div>
   </DndProvider>
   );
