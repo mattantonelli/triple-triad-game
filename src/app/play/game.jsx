@@ -105,18 +105,23 @@ export default function Game({ cards, decks }) {
     return turn % 2 == 0 ? "red" : "blue";
   }
 
+  const players = ["blue", "red"].map((color) => {
+    return <Player key={color} allCards={cards} playedCards={playedCards[color]} decks={decks}
+      currentPlayer={currentPlayer()} color={color} />;
+  });
+
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
       <TurnIndicator currentPlayer={currentPlayer()} />
       <div className="d-flex flex-column">
         <Score scores={scores} />
-        <Player allCards={cards} playedCards={playedCards.blue} decks={decks} currentPlayer={currentPlayer()} color="blue" />
+        {players[0]}
       </div>
       <Board squares={squares} playCard={playCard} />
       <div className="d-flex flex-column">
         <Controls />
-        <Player allCards={cards} playedCards={playedCards.red} decks={decks} currentPlayer={currentPlayer()} color="red" />
+        {players[1]}
       </div>
     </div>
   </DndProvider>
