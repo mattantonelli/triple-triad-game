@@ -4,27 +4,16 @@ import NPC from "./npc";
 import { useEffect, useState } from "react";
 import NPCFilters from "./npcFilters";
 
-const DATA_URL = "https://triad.raelys.com/api/npcs?deck=1";
-
-export default function NPCList() {
-  const [allNpcs, setAllNpcs] = useState([]);
+export default function NPCList({ npcs: allNpcs }) {
   const [npcs, setNpcs] = useState([]);
   const [rules, setRules] = useState([]);
 
   useEffect(() => {
-    fetch(DATA_URL, { next: { revalidate: 86400 }})
-      .then((res) => res.json())
-      .then((data) => data.results.sort((a, b) => a.name < b.name ? -1 : 0)) // Sort alphabetically
-      .then((npcs) => {
-        setAllNpcs(npcs);
-        setNpcs(npcs);
-
-        // Create a set of unique rules available across all NPCs
-        let rules = new Set();
-        npcs.forEach((npc) => npc.rules.forEach((rule) => rules.add(rule)));
-        setRules([...rules].sort());
-      });
-  }, []);
+    // Create a set of unique rules available across all NPCs
+    let rules = new Set();
+    allNpcs.forEach((npc) => npc.rules.forEach((rule) => rules.add(rule)));
+    setRules([...rules].sort());
+  }, [allNpcs]);
 
   return (
     <>
