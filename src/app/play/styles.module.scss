@@ -1,4 +1,5 @@
 .gameMat {
+  position: relative;
   width: 1122px;
   height: 562px;
   padding: 44px 12px;
@@ -8,7 +9,7 @@
 .score {
   width: 342px;
   height: 102px;
-  padding: 20px 30px 14px 70px;
+  padding: 20px 30px 14px 78px;
 
   img {
     margin-left: -5px;
@@ -31,6 +32,18 @@
 .player {
   width: 342px;
   height: 372px;
+}
+
+.blueTurn {
+  position: absolute;
+  top: 67px;
+  left: 36px;
+}
+
+.redTurn {
+  position: absolute;
+  top: 67px;
+  right: 36px;
 }
 
 .board {

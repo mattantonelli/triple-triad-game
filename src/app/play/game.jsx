@@ -8,6 +8,7 @@ import Player from "./player";
 import Board from "./board";
 import Score from "./score";
 import Controls from "./controls";
+import TurnIndicator from "./turnIndicator";
 
 // Returns a list of adjacent indexes for checking flips.
 // 0 1 2
@@ -34,6 +35,7 @@ export default function Game({ cards, decks }) {
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
+  const [turn, setTurn] = useState(1);
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
   function playFromHand(card, color) {
@@ -56,6 +58,9 @@ export default function Game({ cards, decks }) {
 
     // Remove it from the player's hand
     playFromHand(card, color);
+
+    // And increment the turn #
+    setTurn(turn + 1);
   }
 
   // Checks a card's neighbors to see if they can be flipped
@@ -96,17 +101,22 @@ export default function Game({ cards, decks }) {
     return newSquares;
   }
 
+  function currentPlayer() {
+    return turn % 2 == 0 ? "red" : "blue";
+  }
+
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
+      <TurnIndicator currentPlayer={currentPlayer()} />
       <div className="d-flex flex-column">
         <Score scores={scores} />
-        <Player allCards={cards} playedCards={playedCards.blue} decks={decks} color="blue" />
+        <Player allCards={cards} playedCards={playedCards.blue} decks={decks} currentPlayer={currentPlayer()} color="blue" />
       </div>
       <Board squares={squares} playCard={playCard} />
       <div className="d-flex flex-column">
         <Controls />
-        <Player allCards={cards} playedCards={playedCards.red} decks={decks} color="red" />
+        <Player allCards={cards} playedCards={playedCards.red} decks={decks} currentPlayer={currentPlayer()} color="red" />
       </div>
     </div>
   </DndProvider>
