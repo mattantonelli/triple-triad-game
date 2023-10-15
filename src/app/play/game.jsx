@@ -9,6 +9,7 @@ import Board from "./board";
 import Score from "./score";
 import Controls from "./controls";
 import TurnIndicator from "./turnIndicator";
+import Message from "./message";
 
 // Returns a list of adjacent indexes for checking flips.
 // 0 1 2
@@ -36,6 +37,8 @@ export default function Game({ cards, decks }) {
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
   const [turn, setTurn] = useState(1);
+  const [message, setMessage] = useState(null);
+  const [canPlay, setCanPlay] = useState(true);
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
   function playFromHand(card, color) {
@@ -45,8 +48,9 @@ export default function Game({ cards, decks }) {
   }
 
   // Plays a card, adding it to the board and checking to flip its neighbors
-  function playCard(card, color, index) {
-    console.log(`${color} played ${card.name} at (${indexToCoordinates(index).join(", ")})`);
+  async function playCard(card, color, index) {
+    // Disable play while the placed card is evaluated
+    setCanPlay(false);
 
     // Add the card to the board
     let newSquares = [...squares];
@@ -59,8 +63,14 @@ export default function Game({ cards, decks }) {
     // Remove it from the player's hand
     playFromHand(card, color);
 
-    // And increment the turn #
+    // Increment the turn #
     setTurn(turn + 1);
+
+    // Display the next turn message and wait while it is being displayed
+    await showMessage("messages", `${nextPlayer()}_turn`);
+
+    // Re-enable play
+    setCanPlay(true);
   }
 
   // Checks a card's neighbors to see if they can be flipped
@@ -101,18 +111,37 @@ export default function Game({ cards, decks }) {
     return newSquares;
   }
 
+  // Returns the color of the current player, based on the turn #
   function currentPlayer() {
     return turn % 2 == 0 ? "red" : "blue";
   }
 
+  // Returns the color of the next player, based on the turn #
+  function nextPlayer() {
+    return turn % 2 == 0 ? "blue" : "red";
+  }
+
+  // Shows the given message for a short duration
+  async function showMessage(type, message) {
+    setMessage({ type: type, message: message });
+
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setMessage(null);
+        resolve();
+      }, 750);
+    });
+  }
+
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} allCards={cards} playedCards={playedCards[color]} decks={decks}
-      currentPlayer={currentPlayer()} currentTurn={turn} color={color} />;
+      currentPlayer={currentPlayer()} currentTurn={turn} color={color} canPlay={canPlay} />;
   });
 
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
+      <Message {...message} />
       <TurnIndicator currentPlayer={currentPlayer()} />
       <div className="d-flex flex-column">
         <Score scores={scores} />

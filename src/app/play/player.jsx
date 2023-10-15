@@ -2,7 +2,7 @@ import { useState } from "react";
 import PlayCard from "./playCard";
 import styles from "./styles.module.scss";
 
-export default function Player({ allCards, playedCards, decks, currentPlayer, currentTurn, color }) {
+export default function Player({ allCards, playedCards, decks, currentPlayer, currentTurn, color, canPlay }) {
   const [cards, setCards] = useState([]);
 
   function selectDeck(selected) {
@@ -35,7 +35,7 @@ export default function Player({ allCards, playedCards, decks, currentPlayer, cu
         {cards.map((card) => {
           const isPlayed = isCardPlayed(card);
           return <PlayCard key={card.id} card={card} color={color} isVisible={!isPlayed}
-            isDraggable={!isPlayed && isPlayerTurn() } />;
+            isDraggable={canPlay && isPlayerTurn() && !isPlayed } />;
         })}
       </div>
     </div>

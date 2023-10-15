@@ -39,6 +39,21 @@
   }
 }
 
+.message {
+  position: absolute;
+  width: 1098px;
+  height: 474px;
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  z-index: 2;
+  pointer-events: none;
+
+  img {
+    position: absolute;
+    margin: 190px 249px;
+  }
+}
+
 .blueTurn {
   position: absolute;
   top: 67px;
