@@ -6,7 +6,7 @@ export default async function Cards() {
 
   return (
     <div className="row">
-      <div className="col-6 offset-3">
+      <div className="col-12 col-lg-10 col-xl-6 offset-lg-1 offset-xl-3">
         <CardList cards={cards} />
       </div>
     </div>

@@ -1,9 +1,11 @@
+# Triple Triad Online
+
 Final Fantasy XIV's Triple Triad running on [Next.js](https://nextjs.org/). This application is a work in progress. Data provided by [Another Triple Triad Tracker](https://triad.raelys.com/).
 
 ## Installation
 
 ```bash
-git clone https://github.com/mattantonelli/triple-triad
+git clone https://github.com/mattantonelli/triple-triad-game
 cd triple-triad
 npm install
 npm run dev

@@ -7,7 +7,7 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Triple Triad",
+  title: "Triple Triad Online",
   description: "Play Triple Triad in your web browser.",
 };
 
@@ -20,7 +20,7 @@ export default function RootLayout({ children }) {
             <div className="container">
               <Link href="/play" className="navbar-brand">
                 <Image src="/images/logo.png" width="40" height="40" alt="Logo" />
-                <span>Triple Triad</span>
+                <span>Triple Triad Online</span>
               </Link>
               <div className="collapse navbar-collapse">
                 <div className="navbar-nav">

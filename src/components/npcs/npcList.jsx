@@ -18,13 +18,13 @@ export default function NPCList({ npcs: allNpcs }) {
   return (
     <>
       <div className="row mb-3">
-        <div className="col-10 offset-1">
+        <div className="col-12 col-xl-10 offset-xl-1">
           <div className="mx-2">
             <NPCFilters npcs={allNpcs} setNpcs={setNpcs} rules={rules} />
           </div>
         </div>
       </div>
-      <div className="row row-cols-2 g-4 col-10 offset-1">
+      <div className="row row-cols-2 g-4 col-12 col-xl-10 offset-xl-1">
         {npcs.map((npc) => <NPC key={npc.id} npc={npc} />)}
       </div>
     </>
