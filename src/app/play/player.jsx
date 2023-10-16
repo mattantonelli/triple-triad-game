@@ -1,15 +1,7 @@
-import { useState } from "react";
 import PlayCard from "./playCard";
 import styles from "./styles.module.scss";
 
-export default function Player({ allCards, playedCards, decks, currentPlayer, currentTurn, color, canPlay }) {
-  const [cards, setCards] = useState([]);
-
-  function selectDeck(selected) {
-    const deckCards = selected.split(",").map((id) => allCards[id]);
-    setCards(deckCards);
-  }
-
+export default function Player({ cards, playedCards, decks, selectDeck, currentPlayer, currentTurn, color, canPlay }) {
   function isCardPlayed(card) {
     return playedCards.map((card) => card.id).includes(card.id);
   }
@@ -24,7 +16,7 @@ export default function Player({ allCards, playedCards, decks, currentPlayer, cu
 
   return (
     <div className={`d-flex flex-column ${styles.player}`}>
-      <select className="form-select" key={color} onChange={e => selectDeck(e.target.value)} disabled={isPlayStarted()}>
+      <select className="form-select" key={color} onChange={e => selectDeck(color, e.target.value)} disabled={isPlayStarted()}>
         <option value="">Select a deck</option>
         {decks.map((deck, i) => {
           return <option key={i} value={deck.cards}>{deck.name}</option>;

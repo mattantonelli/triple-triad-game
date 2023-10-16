@@ -33,12 +33,27 @@ function indexToCoordinates(index) {
 }
 
 export default function Game({ cards, decks }) {
+  const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
   const [turn, setTurn] = useState(1);
   const [message, setMessage] = useState(null);
-  const [canPlay, setCanPlay] = useState(true);
+  const [canPlay, setCanPlay] = useState(false);
+
+  // Selects the deck to be used by a player
+  function selectDeck(color, cardIds) {
+    const selectedCards = cardIds.split(",").map((id) => cards[id]);
+
+    let newPlayerCards = {...playerCards};
+    newPlayerCards[color] = selectedCards;
+    setPlayerCards(newPlayerCards);
+
+    // If both players have selected a deck, play can begin
+    if (newPlayerCards.blue.length > 0 && newPlayerCards.red.length > 0) {
+      setCanPlay(true);
+    }
+  }
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
   function playFromHand(card, color) {
@@ -150,8 +165,10 @@ export default function Game({ cards, decks }) {
   }
 
   const players = ["blue", "red"].map((color) => {
-    return <Player key={color} allCards={cards} playedCards={playedCards[color]} decks={decks}
-      currentPlayer={currentPlayer()} currentTurn={turn} color={color} canPlay={canPlay} />;
+    return <Player key={color} cards={playerCards[color]} playedCards={playedCards[color]}
+      currentPlayer={currentPlayer()} currentTurn={turn}
+      decks={decks} selectDeck={selectDeck}
+      color={color} canPlay={canPlay} />;
   });
 
   return (
