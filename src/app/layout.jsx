@@ -2,11 +2,9 @@ import "./globals.scss";
 import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import Link from "next/link";
-import localFont from "next/font/local";
 import Image from "next/image";
 
 const inter = Inter({ subsets: ["latin"] });
-const xivFont = localFont({ src: "../../public/fonts/XIV_ASAS_R.otf" });
 
 export const metadata = {
   title: "Triple Triad",
@@ -16,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={`${inter.className} ${xivFont.className}`}>
+      <body className={inter.className}>
         <header>
           <nav className="navbar navbar-expand shadow">
             <div className="container">
