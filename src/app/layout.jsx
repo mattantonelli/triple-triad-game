@@ -35,8 +35,8 @@ export default function RootLayout({ children }) {
         <div className="container-fluid">
           <main className="mt-3">{children}</main>
         </div>
-        <footer class="footer mt-auto py-3">
-          <div class="container text-center">
+        <footer className="footer mt-auto py-3">
+          <div className="container text-center">
             <span>
               Created by Raelys |
               <a href="https://github.com/mattantonelli/triple-triad-game" target="_blank" className="m-1">
