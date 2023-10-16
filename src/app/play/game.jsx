@@ -57,26 +57,39 @@ export default function Game({ cards, decks }) {
     newSquares[index] = { color: color, card: card };
 
     // Try to flip its neighbors
-    newSquares = checkFlips(newSquares, card, color, index);
-    setSquares(newSquares);
+    let newScores = {...scores};
+    [newSquares, newScores] = checkFlips(newSquares, newScores, card, color, index);
 
-    // Remove it from the player's hand
+    // Update the squares and scores
+    setSquares(newSquares);
+    setScores(newScores);
+
+    // Remove the card from the player's hand
     playFromHand(card, color);
 
-    // Increment the turn #
-    setTurn(turn + 1);
+    if (turn === 9) {
+      // If the game is over, calculate a winner and display the winning message
+      if (newScores.blue > newScores.red) {
+        showMessage("messages", "blue_wins", null);
+      } else if (newScores.red > newScores.blue) {
+        showMessage("messages", "red_wins", null);
+      } else {
+        showMessage("messages", "draw", null);
+      }
+    } else {
+      // Otherwise, increment the turn #
+      setTurn(turn + 1);
 
-    // Display the next turn message and wait while it is being displayed
-    await showMessage("messages", `${nextPlayer()}_turn`);
+      // Display the next turn message and wait while it is being displayed
+      // await showMessage("messages", `${nextPlayer()}_turn`);
 
-    // Re-enable play
-    setCanPlay(true);
+      // Re-enable play
+      setCanPlay(true);
+    }
   }
 
   // Checks a card's neighbors to see if they can be flipped
-  function checkFlips(newSquares, card, color, index) {
-    let newScores = {...scores};
-
+  function checkFlips(newSquares, newScores, card, color, index) {
     adjacentIndexes[index].forEach((neighborIndex) => {
       const neighbor = newSquares[neighborIndex];
 
@@ -107,8 +120,7 @@ export default function Game({ cards, decks }) {
       }
     });
 
-    setScores(newScores);
-    return newSquares;
+    return [newSquares, newScores];
   }
 
   // Returns the color of the current player, based on the turn #
@@ -122,15 +134,19 @@ export default function Game({ cards, decks }) {
   }
 
   // Shows the given message for a short duration
-  async function showMessage(type, message) {
+  async function showMessage(type, message, clearAfter = 750) {
     setMessage({ type: type, message: message });
 
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        setMessage(null);
-        resolve();
-      }, 750);
-    });
+    // If the message needs to be cleared after a time, set up a timer
+    // and return a Promise so we can signal when the message is cleared.
+    if (clearAfter) {
+      return new Promise((resolve) => {
+        setTimeout(() => {
+          setMessage(null);
+          resolve();
+        }, clearAfter);
+      });
+    }
   }
 
   const players = ["blue", "red"].map((color) => {
