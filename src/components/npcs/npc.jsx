@@ -1,14 +1,10 @@
-import Link from "next/link";
 import Card from "../cards/card";
 
 export default function NPC({ npc }) {
   return (
     <div className="col">
       <div className="card shadow">
-        <div className="card-header d-flex justify-content-between align-items-center">
-          <h5 className="card-title mb-0">{npc.name}</h5>
-          <Link href="#" className="btn btn-primary">Challenge</Link>
-        </div>
+        <h5 className="card-header">{npc.name}</h5>
         <div className="card-body">
           <dl>
             <dt>Rules</dt>
