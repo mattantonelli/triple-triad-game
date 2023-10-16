@@ -1,4 +1,5 @@
 import "./globals.scss";
+import { Analytics } from "@vercel/analytics/react";
 import { Inter } from "next/font/google";
 import Link from "next/link";
 import localFont from "next/font/local";
@@ -36,6 +37,7 @@ export default function RootLayout({ children }) {
         <div className="container-fluid">
           <main className="mt-3">{children}</main>
         </div>
+        <Analytics />
       </body>
     </html>
   );
