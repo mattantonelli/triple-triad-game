@@ -41,6 +41,16 @@ export default function Game({ cards, decks }) {
   const [message, setMessage] = useState(null);
   const [canPlay, setCanPlay] = useState(false);
 
+  // Reset all game parameters
+  function resetGame() {
+    setPlayedCards({ blue: [], red: [] });
+    setScores({ blue: 5, red: 5 });
+    setSquares(Array(9).fill({}));
+    setTurn(1);
+    setMessage(null);
+    setCanPlay(true);
+  }
+
   // Selects the deck to be used by a player
   function selectDeck(color, cardIds) {
     const selectedCards = cardIds.split(",").map((id) => cards[id]);
@@ -85,11 +95,11 @@ export default function Game({ cards, decks }) {
     if (turn === 9) {
       // If the game is over, calculate a winner and display the winning message
       if (newScores.blue > newScores.red) {
-        showMessage("messages", "blue_wins", null);
+        showMessage("victory", "blue_wins", null);
       } else if (newScores.red > newScores.blue) {
-        showMessage("messages", "red_wins", null);
+        showMessage("victory", "red_wins", null);
       } else {
-        showMessage("messages", "draw", null);
+        showMessage("victory", "draw", null);
       }
     } else {
       // Otherwise, increment the turn #
@@ -174,7 +184,7 @@ export default function Game({ cards, decks }) {
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
-      <Message {...message} />
+      <Message {...message} resetGame={resetGame} />
       <TurnIndicator currentPlayer={currentPlayer()} />
       <div className="d-flex flex-column">
         <Score scores={scores} />
