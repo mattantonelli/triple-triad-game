@@ -14,7 +14,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} d-flex flex-column`}>
         <header>
           <nav className="navbar navbar-expand shadow">
             <div className="container">
@@ -35,6 +35,19 @@ export default function RootLayout({ children }) {
         <div className="container-fluid">
           <main className="mt-3">{children}</main>
         </div>
+        <footer class="footer mt-auto py-3">
+          <div class="container text-center">
+            <span>
+              Created by Raelys |
+              <a href="https://github.com/mattantonelli/triple-triad-game" target="_blank" className="m-1">
+                <Image src="/images/github.png" alt="GitHub" width="25" height="25" />
+              </a>
+              <a href="https://discord.gg/RX8dz3sb7U" target="_blank">
+                <Image src="/images/discord.png" alt="Discord" width="25" height="24" />
+              </a>
+            </span>
+          </div>
+        </footer>
         <Analytics />
       </body>
     </html>
