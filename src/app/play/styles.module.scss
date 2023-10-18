@@ -79,12 +79,24 @@
   padding: 32px 3px;
 }
 
+@keyframes flip {
+  0%   { transform: rotateY(0deg) }
+  50%  { transform: rotateY(90deg)}
+  100% { transform: rotateY(0deg) }
+}
+
 .playSquare {
   width: 136px;
   height: 136px;
 
   img {
     margin: 4px 16px;
+  }
+
+  // Multiple animation classes ensure the animation plays
+  // if the card flips back to back.
+  &.redFlip, &.blueFlip img {
+    animation: flip 0.5s;
   }
 }
 
@@ -94,6 +106,6 @@
   }
 
   img {
-    transition: 0.25s background;
+    transition: 1s background;
   }
 }
