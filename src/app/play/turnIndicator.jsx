@@ -3,7 +3,11 @@ import styles from "./styles.module.scss";
 
 export default function TurnIndicator({ currentPlayer }) {
   return (
-    <Image src={`/images/move_${currentPlayer}.png`} alt={`${currentPlayer}'s turn`} width="52" height="53"
-      className={styles[`${currentPlayer}Turn`]} />
+    <>
+      {["blue", "red"].map((color) => {
+        return <Image key={color} src={`/images/move_${color}.png`} alt={`${color}'s turn`} width="52" height="53"
+          className={`${styles.turnIndicator} ${styles[`${color}Turn`]} ${currentPlayer === color && styles.activeTurn}`} />;
+      })}
+    </>
   );
 }

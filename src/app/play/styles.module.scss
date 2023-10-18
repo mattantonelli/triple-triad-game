@@ -53,16 +53,24 @@
   }
 }
 
-.blueTurn {
+.turnIndicator {
   position: absolute;
   top: 67px;
+  opacity: 0;
+  transition: opacity 0.5s;
+}
+
+.blueTurn {
   left: 36px;
 }
 
 .redTurn {
-  position: absolute;
-  top: 67px;
   right: 36px;
+}
+
+.activeTurn {
+  opacity: 1;
+  transition: opacity 0.5s;
 }
 
 .board {
@@ -81,6 +89,11 @@
 }
 
 .playCard {
-  // Fix background rendering issue on drag
-  transform: translate(0, 0);
+  &.canDrag:hover {
+    transform: translateY(-5px);
+  }
+
+  img {
+    transition: 0.25s background;
+  }
 }

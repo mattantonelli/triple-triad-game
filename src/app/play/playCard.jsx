@@ -13,7 +13,7 @@ export default function PlayCard({ card, color, isDraggable, isVisible }) {
   }), [isDraggable]);
 
   return (
-    <div className={styles.playCard} ref={dragRef}
+    <div className={`${styles.playCard} ${(isDraggable ? styles.canDrag : "")}`} ref={dragRef}
       style={{opacity: isDragging ? 0.5 : (isVisible ? 1 : 0), cursor: isDraggable ? "pointer" : "default"}}>
       <Card card={card} color={color} tooltip={false} />
     </div>
