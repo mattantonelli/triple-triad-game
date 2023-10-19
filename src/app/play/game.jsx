@@ -53,6 +53,11 @@ export default function Game({ cards, decks }) {
 
   // Selects the deck to be used by a player
   function selectDeck(color, cardIds) {
+    // Ensure we actually have cards to select
+    if (!cardIds) {
+      return;
+    }
+
     const selectedCards = cardIds.split(",").map((id) => cards[id]);
 
     let newPlayerCards = {...playerCards};
