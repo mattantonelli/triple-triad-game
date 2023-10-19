@@ -14,7 +14,7 @@ export default function StartButton({ isVisible, setCurrentPlayer, setCanPlay, s
     setCurrentPlayer(firstPlayer);
 
     // and display a message indicating their turn
-    await showMessage("messages", `${firstPlayer}_turn`);
+    await showMessage("turns", `${firstPlayer}_turn`);
 
     // Start play
     setCanPlay(true);

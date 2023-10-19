@@ -3,7 +3,7 @@ import styles from "./styles.module.scss";
 
 export default function Message({ type, message, resetGame }) {
   if (message) {
-    const path = `/images/${type}/${message}.png`;
+    const path = `/images/messages/${type}/${message}.png`;
 
     // If a victory message is displayed, clicking the board resets the game.
     return (
