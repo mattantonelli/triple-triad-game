@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import Game from "./game";
 import { getCardsById, getNpcDecks } from "@/lib/data";
 
@@ -9,10 +10,10 @@ export default async function Play() {
     <>
       {["red", "blue"].map((color) => {
         return (
-          <>
+          <Fragment key={color}>
             <link rel="preload" as="image" href={`https://triad.raelys.com/images/cards/large_${color}.png`} />
             <link rel="preload" as="image" href={`/images/messages/turns/${color}_turn.png`} />
-          </>
+          </Fragment>
         );
       })}
 
