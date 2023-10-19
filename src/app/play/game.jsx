@@ -10,6 +10,7 @@ import Score from "./score";
 import Controls from "./controls";
 import TurnIndicator from "./turnIndicator";
 import Message from "./message";
+import StartButton from "./startButton";
 
 // Returns a list of adjacent indexes for checking flips.
 // 0 1 2
@@ -33,22 +34,37 @@ function indexToCoordinates(index) {
 }
 
 export default function Game({ cards, decks }) {
+  // For quick testing purposes
+  // const [canPlay, setCanPlay] = useState(true);
+  // const [turn, setTurn] = useState(1);
+  // const [currentPlayer, setCurrentPlayer] = useState("blue");
+  // const [playerCards, setPlayerCards] = useState(
+  //   { blue: "327,234,233,169,111".split(",").map((id) => cards[id]),
+  //     red:  "298,299,208,180,250".split(",").map((id) => cards[id]) }
+  // );
+
+  const [canPlay, setCanPlay] = useState(false);
   const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
+  const [turn, setTurn] = useState(0);
+  const [currentPlayer, setCurrentPlayer] = useState();
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
-  const [turn, setTurn] = useState(1);
   const [message, setMessage] = useState(null);
-  const [canPlay, setCanPlay] = useState(false);
 
   // Reset all game parameters
   function resetGame() {
     setPlayedCards({ blue: [], red: [] });
     setScores({ blue: 5, red: 5 });
     setSquares(Array(9).fill({}));
-    setTurn(1);
+    setTurn(0);
+    setCanPlay(false);
     setMessage(null);
-    setCanPlay(true);
+  }
+
+  // Returns true if play has not started and both players have selected a deck
+  function canStart() {
+    return !canPlay && turn === 0 && playerCards.blue.length > 0 && playerCards.red.length > 0;
   }
 
   // Selects the deck to be used by a player
@@ -63,11 +79,6 @@ export default function Game({ cards, decks }) {
     let newPlayerCards = {...playerCards};
     newPlayerCards[color] = selectedCards;
     setPlayerCards(newPlayerCards);
-
-    // If both players have selected a deck, play can begin
-    if (newPlayerCards.blue.length > 0 && newPlayerCards.red.length > 0) {
-      setCanPlay(true);
-    }
   }
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
@@ -107,11 +118,8 @@ export default function Game({ cards, decks }) {
         showMessage("victory", "draw", null);
       }
     } else {
-      // Otherwise, increment the turn #
-      setTurn(turn + 1);
-
-      // Display the next turn message and wait while it is being displayed
-      // await showMessage("messages", `${nextPlayer()}_turn`);
+      // Otherwise, move to the next turn
+      incrementTurn();
 
       // Re-enable play
       setCanPlay(true);
@@ -153,14 +161,10 @@ export default function Game({ cards, decks }) {
     return [newSquares, newScores];
   }
 
-  // Returns the color of the current player, based on the turn #
-  function currentPlayer() {
-    return turn % 2 == 0 ? "red" : "blue";
-  }
-
-  // Returns the color of the next player, based on the turn #
-  function nextPlayer() {
-    return turn % 2 == 0 ? "blue" : "red";
+  // Increments the turn # and switches play to the opposite color
+  function incrementTurn() {
+    setTurn(turn + 1);
+    setCurrentPlayer(currentPlayer === "blue" ? "red" : "blue");
   }
 
   // Shows the given message for a short duration
@@ -181,7 +185,7 @@ export default function Game({ cards, decks }) {
 
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} cards={playerCards[color]} playedCards={playedCards[color]}
-      currentPlayer={currentPlayer()} currentTurn={turn}
+      currentPlayer={currentPlayer} turn={turn}
       decks={decks} selectDeck={selectDeck}
       color={color} canPlay={canPlay} />;
   });
@@ -189,8 +193,10 @@ export default function Game({ cards, decks }) {
   return (
     <DndProvider backend={HTML5Backend}>
     <div className={`d-flex ${styles.gameMat} mx-auto`}>
+      <StartButton isVisible={canStart()} setCanPlay={setCanPlay} setCurrentPlayer={setCurrentPlayer}
+        setTurn={setTurn} showMessage={showMessage} />
       <Message {...message} resetGame={resetGame} />
-      <TurnIndicator currentPlayer={currentPlayer()} />
+      <TurnIndicator currentPlayer={currentPlayer} />
       <div className="d-flex flex-column">
         <Score scores={scores} />
         {players[0]}

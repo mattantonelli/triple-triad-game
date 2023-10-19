@@ -1,7 +1,7 @@
 import PlayCard from "./playCard";
 import styles from "./styles.module.scss";
 
-export default function Player({ cards, playedCards, decks, selectDeck, currentPlayer, currentTurn, color, canPlay }) {
+export default function Player({ cards, playedCards, decks, selectDeck, currentPlayer, turn, color, canPlay }) {
   function isCardPlayed(card) {
     return playedCards.map((card) => card.id).includes(card.id);
   }
@@ -11,12 +11,12 @@ export default function Player({ cards, playedCards, decks, selectDeck, currentP
   }
 
   function isPlayStarted() {
-    return currentTurn > 1;
+    return turn > 0;
   }
 
   return (
     <div className={`d-flex flex-column ${styles.player}`}>
-      <select className="form-select" key={color} onChange={e => selectDeck(color, e.target.value)} disabled={isPlayStarted()}>
+      <select className="form-select" onChange={e => selectDeck(color, e.target.value)} disabled={isPlayStarted()}>
         <option value="">Select a deck</option>
         {decks.map((deck, i) => {
           return <option key={i} value={deck.cards}>{deck.name}</option>;

@@ -39,6 +39,19 @@
   }
 }
 
+.startButton {
+  position: absolute;;
+  width: 1098px;
+  height: 474px;
+
+  // Don't let the container eat pointer events from underlying elements
+  pointer-events: none;
+
+  button {
+    pointer-events: all;
+  }
+}
+
 .message {
   position: absolute;
   width: 1098px;
