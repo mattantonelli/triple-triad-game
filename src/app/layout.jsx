@@ -7,8 +7,15 @@ import Image from "next/image";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
+  metadataBase: new URL("https://play.ffxivtriad.com"),
   title: "Triple Triad Online",
   description: "Play Triple Triad in your web browser.",
+  themeColor: "#CAA665",
+  openGraph: {
+    title: "Triple Triad Online",
+    description: "Play Triple Triad in your web browser.",
+    images: ["/images/logo.png"]
+  }
 };
 
 export default function RootLayout({ children }) {
