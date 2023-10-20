@@ -1,3 +1,4 @@
+import ReactDOM from "react-dom";
 import NPCList from "@/components/npcs/npcList";
 import { getNpcs } from "@/lib/data";
 
@@ -6,13 +7,11 @@ export const metadata = {
 };
 
 export default async function NPCs() {
+  ReactDOM.preload("https://triad.raelys.com/images/cards/large.png", { as: "image" });
+
   const npcs = await getNpcs();
 
   return (
-    <>
-      <link rel="preload" as="image" href="https://triad.raelys.com/images/cards/large.png" / >
-
-      <NPCList npcs={npcs} />;
-    </>
+    <NPCList npcs={npcs} />
   );
 }
