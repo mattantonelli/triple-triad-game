@@ -59,3 +59,19 @@ header {
   background: linear-gradient(#4f4d4d, #5a5650);
   border-radius: 0 0 0.25rem 0.25rem;
 }
+
+.btn.btn-gray {
+  background: linear-gradient(#5b5b5b, #373737, #5b5b5b);
+  border-color: #555;
+  color: #eee;
+
+  &:hover {
+    border-color: #555;
+    background: linear-gradient(#6b6b6b, #474747, #6b6b6b);
+  }
+
+  &:active {
+    border-color: #555;
+    transform: translateY(1px);
+  }
+}

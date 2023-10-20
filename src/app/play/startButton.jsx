@@ -27,7 +27,7 @@ export default function StartButton({ isVisible, setCurrentPlayer, setCanPlay, s
   if (isVisible && !isPressed.current) {
     return (
       <div className={`d-flex justify-content-center align-items-center ${styles.startButton}`}>
-        <button type="button" className="btn btn-success" onClick={() => startGame()}>Start Game</button>
+        <button type="button" className="btn btn-gray" onClick={() => startGame()}>Start Game</button>
       </div>
     );
   }
