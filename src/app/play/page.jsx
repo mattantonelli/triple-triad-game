@@ -3,10 +3,7 @@ import Game from "./game";
 import { getCardsById, getNpcDecks } from "@/lib/data";
 
 export const metadata = {
-  title: "Triple Triad Online - Play",
-  openGraph: {
-    title: "Triple Triad Online - Play"
-  }
+  title: "Play"
 };
 
 export default async function Play() {

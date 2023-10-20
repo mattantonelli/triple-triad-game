@@ -2,10 +2,7 @@ import NPCList from "@/components/npcs/npcList";
 import { getNpcs } from "@/lib/data";
 
 export const metadata = {
-  title: "Triple Triad Online - NPCs",
-  openGraph: {
-    title: "Triple Triad Online - NPCs"
-  }
+  title: "NPCs"
 };
 
 export default async function NPCs() {

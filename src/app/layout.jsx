@@ -8,7 +8,10 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
   metadataBase: new URL("https://play.ffxivtriad.com"),
-  title: "Triple Triad Online",
+  title: {
+    template: "Triple Triad Online - %s",
+    default: "Triple Triad Online"
+  },
   description: "Play Triple Triad in your web browser.",
   themeColor: "#CAA665",
   openGraph: {
