@@ -12,7 +12,7 @@ export default async function Play() {
     ReactDOM.preload(`/images/messages/turns/${color}_turn.png`, { as: "image" });
   });
 
-  ["fallen_ace"].map((rule) => {
+  ["chaos", "fallen_ace", "order", "plus", "reverse", "same", "combo"].map((rule) => {
     ReactDOM.preload(`/images/messages/rules/${rule}.png`, { as: "image" });
   });
 
