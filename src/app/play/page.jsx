@@ -21,7 +21,7 @@ export default async function Play() {
 
   return (
     <div className="d-flex flex-column">
-      <Game cards={cards} decks={decks} />
+      <Game cards={cards} decks={decks} environment={process.env.NODE_ENV} />
       <div className="card mx-auto mt-3">
         <h5 className="card-header">How to play</h5>
         <div className="card-body pb-0">

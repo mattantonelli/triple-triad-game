@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import styles from "./styles.module.scss";
@@ -13,17 +13,7 @@ import Message from "./message";
 import StartButton from "./startButton";
 import { checkFlips } from "@/lib/game_logic";
 
-export default function Game({ cards, decks }) {
-  // For quick testing purposes
-  // const [canPlay, setCanPlay] = useState(true);
-  // const [turn, setTurn] = useState(0);
-  // const [currentPlayer, setCurrentPlayer] = useState("blue");
-  // const [rule, setRule] = useState("Fallen Ace");
-  // const [playerCards, setPlayerCards] = useState(
-  //   { blue: "66,52,43,48,42".split(",").map((id) => cards[id]),
-  //     red:  "64,61,47,42,31".split(",").map((id) => cards[id]) }
-  // );
-
+export default function Game({ cards, decks, environment }) {
   const [canPlay, setCanPlay] = useState(false);
   const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
   const [turn, setTurn] = useState(0);
@@ -33,6 +23,20 @@ export default function Game({ cards, decks }) {
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
   const [message, setMessage] = useState(null);
+
+  // Set initial values for quick testing purposes in the dev environment
+  useEffect(() => {
+    if (environment === "development") {
+      setCanPlay(true);
+      setTurn(1);
+      setCurrentPlayer("blue");
+      setRule("Fallen Ace");
+      setPlayerCards(
+        { blue: "66,52,43,48,42".split(",").map((id) => cards[id]),
+          red:  "64,61,47,42,31".split(",").map((id) => cards[id]) }
+      );
+    }
+  }, [setCanPlay, setTurn, setCurrentPlayer, setRule, setPlayedCards, cards, environment]);
 
   // Reset all game parameters
   function resetGame() {
