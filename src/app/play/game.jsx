@@ -32,7 +32,7 @@ export default function Game({ cards, decks, environment }) {
       setCanPlay(true);
       setTurn(1);
       setCurrentPlayer("blue");
-      setRule("Fallen Ace");
+      setRule("Reverse");
       setPlayerCards(
         { blue: "66,52,43,48,42".split(",").map((id) => cards[id]),
           red:  "64,61,47,42,31".split(",").map((id) => cards[id]) }
