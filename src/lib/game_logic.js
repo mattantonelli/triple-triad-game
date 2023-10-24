@@ -20,10 +20,10 @@ function indexToCoordinates(index) {
 }
 
 // Tries to flip the neighbors for a card played at the given index
-export function checkFlips(squares, scores, rule, index, showMessage) {
+export async function checkFlips(squares, setSquares, scores, setScores, rule, index, showMessage) {
   const played = squares[index];
 
-  adjacentIndexes[index].forEach((neighborIndex) => {
+  for (const neighborIndex of adjacentIndexes[index]) {
     const neighbor = squares[neighborIndex];
 
     if (neighbor.color && neighbor.color !== played.color) {
@@ -35,28 +35,41 @@ export function checkFlips(squares, scores, rule, index, showMessage) {
       const stats = played.card.stats.numeric;
       const neighborStats = neighbor.card.stats.numeric;
 
-      checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores);
+      await checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2,
+        squares, setSquares, scores, setScores);
 
       switch(rule) {
         case "Fallen Ace":
-          checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores, showMessage);
+          await checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2,
+            squares, setSquares, scores, setScores, showMessage);
           return;
       }
     }
-  });
+  }
 }
 
 // Flips the neighbor to the played card's color and updates the scores
-function flipNeighbor(played, neighbor, scores) {
-    const neighborColor = neighbor.color;
-    neighbor.color = played.color;
+async function flipNeighbor(played, neighbor, squares, setSquares, scores, setScores) {
+  const neighborColor = neighbor.color;
+  neighbor.color = played.color;
 
-    scores[played.color] += 1;
-    scores[neighborColor] -= 1;
+  scores[played.color] += 1;
+  scores[neighborColor] -= 1;
+
+  // Update the squares and scores. Set the state using copies since they may be mutated later.
+  setSquares(squares.map((square) => ({...square})));
+  setScores({...scores});
+
+  // Add a short delay for the flip animation
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      resolve();
+    }, 5000);
+  });
 }
 
 // Flips if the played card's stats exceed that of its neighbor on the adjacent side (e.g. 6 > 4)
-function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores) {
+async function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, squares, setSquares, scores, setScores) {
   if (
     (x1 > x2 && stats.left   > neighborStats.right)  ||
     (x1 < x2 && stats.right  > neighborStats.left)   ||
@@ -64,12 +77,12 @@ function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y
     (y1 < y2 && stats.bottom > neighborStats.top)
   ) {
     console.log(`Standard Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
-    flipNeighbor(played, neighbor, scores);
+    await flipNeighbor(played, neighbor, squares, setSquares, scores, setScores);
   }
 }
 
 // Flips if the played card has a 1 adjacent to its neighbor's A (1 = A)
-function checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores, showMessage) {
+async function checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, squares, setSquares, scores, setScores, showMessage) {
   if (
     (x1 > x2 && stats.left   === 1 && neighborStats.right === 10)  ||
     (x1 < x2 && stats.right  === 1 && neighborStats.left === 10)   ||
@@ -77,7 +90,7 @@ function checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, 
     (y1 < y2 && stats.bottom === 1 && neighborStats.top === 10)
   ) {
     console.log(`Fallen Ace Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
-    flipNeighbor(played, neighbor, scores);
-    showMessage("rules", "fallen_ace");
+    flipNeighbor(played, neighbor, squares, setSquares, scores, setScores);
+    await showMessage("rules", "fallen_ace", 750);
   }
 }

@@ -13,6 +13,8 @@ import Message from "./message";
 import StartButton from "./startButton";
 import { checkFlips } from "@/lib/game_logic";
 
+// TODO: Refactor functions passed to children as useCallback hooks to avoid re-rendering children
+// https://react.dev/reference/react/useCallback#usage
 export default function Game({ cards, decks, environment }) {
   const [canPlay, setCanPlay] = useState(false);
   const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
@@ -89,20 +91,17 @@ export default function Game({ cards, decks, environment }) {
     // Disable play while the placed card is evaluated
     setCanPlay(false);
 
+    // Remove the card from the player's hand
+    playFromHand(card, color);
+
     // Add the card to the board
-    let newSquares = [...squares];
+    let newSquares = squares.map((square) => ({...square}));
     newSquares[index] = { color: color, card: card };
+    setSquares(newSquares);
 
     // Try to flip its neighbors
     let newScores = {...scores};
-    checkFlips(newSquares, newScores, rule, index, showMessage);
-
-    // Update the squares and scores
-    setSquares(newSquares);
-    setScores(newScores);
-
-    // Remove the card from the player's hand
-    playFromHand(card, color);
+    await checkFlips(newSquares, setSquares, newScores, setScores, rule, index, showMessage);
 
     if (turn === 9) {
       // If the game is over, calculate a winner and display the winning message
