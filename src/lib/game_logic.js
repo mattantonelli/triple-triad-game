@@ -20,7 +20,7 @@ function indexToCoordinates(index) {
 }
 
 // Tries to flip the neighbors for a card played at the given index
-export function checkFlips(squares, scores, index) {
+export function checkFlips(squares, scores, rule, index, showMessage) {
   const played = squares[index];
 
   adjacentIndexes[index].forEach((neighborIndex) => {
@@ -36,6 +36,12 @@ export function checkFlips(squares, scores, index) {
       const neighborStats = neighbor.card.stats.numeric;
 
       checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores);
+
+      switch(rule) {
+        case "Fallen Ace":
+          checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores, showMessage);
+          return;
+      }
     }
   });
 }
@@ -59,5 +65,19 @@ function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y
   ) {
     console.log(`Standard Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
     flipNeighbor(played, neighbor, scores);
+  }
+}
+
+// Flips if the played card has a 1 adjacent to its neighbor's A (1 = A)
+function checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, scores, showMessage) {
+  if (
+    (x1 > x2 && stats.left   === 1 && neighborStats.right === 10)  ||
+    (x1 < x2 && stats.right  === 1 && neighborStats.left === 10)   ||
+    (y1 > y2 && stats.top    === 1 && neighborStats.bottom === 10) ||
+    (y1 < y2 && stats.bottom === 1 && neighborStats.top === 10)
+  ) {
+    console.log(`Fallen Ace Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
+    flipNeighbor(played, neighbor, scores);
+    showMessage("rules", "fallen_ace");
   }
 }

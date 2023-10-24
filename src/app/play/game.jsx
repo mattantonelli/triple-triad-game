@@ -7,7 +7,7 @@ import styles from "./styles.module.scss";
 import Player from "./player";
 import Board from "./board";
 import Score from "./score";
-import Controls from "./controls";
+import Rules from "./rules";
 import TurnIndicator from "./turnIndicator";
 import Message from "./message";
 import StartButton from "./startButton";
@@ -16,17 +16,19 @@ import { checkFlips } from "@/lib/game_logic";
 export default function Game({ cards, decks }) {
   // For quick testing purposes
   // const [canPlay, setCanPlay] = useState(true);
-  // const [turn, setTurn] = useState(1);
+  // const [turn, setTurn] = useState(0);
   // const [currentPlayer, setCurrentPlayer] = useState("blue");
+  // const [rule, setRule] = useState("Fallen Ace");
   // const [playerCards, setPlayerCards] = useState(
-  //   { blue: "327,234,233,169,111".split(",").map((id) => cards[id]),
-  //     red:  "298,299,208,180,250".split(",").map((id) => cards[id]) }
+  //   { blue: "66,52,43,48,42".split(",").map((id) => cards[id]),
+  //     red:  "64,61,47,42,31".split(",").map((id) => cards[id]) }
   // );
 
   const [canPlay, setCanPlay] = useState(false);
   const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
   const [turn, setTurn] = useState(0);
   const [currentPlayer, setCurrentPlayer] = useState();
+  const [rule, setRule] = useState();
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
@@ -47,6 +49,11 @@ export default function Game({ cards, decks }) {
     return !canPlay && turn === 0 && playerCards.blue.length > 0 && playerCards.red.length > 0;
   }
 
+  // Returns true if play has started
+  function isPlayStarted() {
+    return turn > 0;
+  }
+
   // Selects the deck to be used by a player
   function selectDeck(color, cardIds) {
     // Ensure we actually have cards to select
@@ -59,6 +66,11 @@ export default function Game({ cards, decks }) {
     let newPlayerCards = {...playerCards};
     newPlayerCards[color] = selectedCards;
     setPlayerCards(newPlayerCards);
+  }
+
+  // Selects the rule to be used
+  function selectRule(rule) {
+    setRule(rule);
   }
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
@@ -79,7 +91,7 @@ export default function Game({ cards, decks }) {
 
     // Try to flip its neighbors
     let newScores = {...scores};
-    checkFlips(newSquares, newScores, index);
+    checkFlips(newSquares, newScores, rule, index, showMessage);
 
     // Update the squares and scores
     setSquares(newSquares);
@@ -130,9 +142,8 @@ export default function Game({ cards, decks }) {
 
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} cards={playerCards[color]} playedCards={playedCards[color]}
-      currentPlayer={currentPlayer} turn={turn}
-      decks={decks} selectDeck={selectDeck}
-      color={color} canPlay={canPlay} />;
+      currentPlayer={currentPlayer} isPlayStarted={isPlayStarted} canPlay={canPlay}
+      decks={decks} color={color} selectDeck={selectDeck} />;
   });
 
   return (
@@ -148,7 +159,7 @@ export default function Game({ cards, decks }) {
       </div>
       <Board squares={squares} playCard={playCard} />
       <div className="d-flex flex-column">
-        <Controls />
+        <Rules rule={rule} selectRule={selectRule} isPlayStarted={isPlayStarted} />
         {players[1]}
       </div>
     </div>

@@ -24,9 +24,19 @@
   }
 }
 
-.controls {
+.rules {
   width: 342px;
   height: 102px;
+  padding-top: 5px;
+  padding-left: 35px;
+
+  select {
+    width: 210px;
+  }
+}
+
+.ruleSelect {
+  width: 100px;
 }
 
 .player {

@@ -1,17 +1,13 @@
 import PlayCard from "./playCard";
 import styles from "./styles.module.scss";
 
-export default function Player({ cards, playedCards, decks, selectDeck, currentPlayer, turn, color, canPlay }) {
+export default function Player({ cards, playedCards, decks, selectDeck, currentPlayer, color, isPlayStarted, canPlay }) {
   function isCardPlayed(card) {
     return playedCards.map((card) => card.id).includes(card.id);
   }
 
   function isPlayerTurn() {
     return currentPlayer === color;
-  }
-
-  function isPlayStarted() {
-    return turn > 0;
   }
 
   return (
