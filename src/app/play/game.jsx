@@ -11,27 +11,7 @@ import Controls from "./controls";
 import TurnIndicator from "./turnIndicator";
 import Message from "./message";
 import StartButton from "./startButton";
-
-// Returns a list of adjacent indexes for checking flips.
-// 0 1 2
-// 3 4 5
-// 6 7 8
-const adjacentIndexes = [
-  [1, 3],
-  [0, 2, 4],
-  [1, 5],
-  [0, 4, 6],
-  [1, 5, 7, 3],
-  [2, 4, 8],
-  [3, 7],
-  [4, 6, 8],
-  [5, 7]
-];
-
-// Returns [x, y] coordinates corresponding to the square's index on the board
-function indexToCoordinates(index) {
-  return [index % 3, Math.floor(index / 3)];
-}
+import { checkFlips } from "@/lib/game_logic";
 
 export default function Game({ cards, decks }) {
   // For quick testing purposes
@@ -99,7 +79,7 @@ export default function Game({ cards, decks }) {
 
     // Try to flip its neighbors
     let newScores = {...scores};
-    [newSquares, newScores] = checkFlips(newSquares, newScores, card, color, index);
+    checkFlips(newSquares, newScores, index);
 
     // Update the squares and scores
     setSquares(newSquares);
@@ -124,41 +104,6 @@ export default function Game({ cards, decks }) {
       // Re-enable play
       setCanPlay(true);
     }
-  }
-
-  // Checks a card's neighbors to see if they can be flipped
-  function checkFlips(newSquares, newScores, card, color, index) {
-    adjacentIndexes[index].forEach((neighborIndex) => {
-      const neighbor = newSquares[neighborIndex];
-
-      if (neighbor.color && neighbor.color !== color) {
-        // Translate the square indexes into usable coordinates to determine sides
-        const [x1, y1] = indexToCoordinates(index);
-        const [x2, y2] = indexToCoordinates(neighborIndex);
-
-        // Based on the relative position of the squares, check if the placed card's
-        // stats exceeds that of its neighbor
-        const stats = card.stats.numeric;
-        const neighborStats = neighbor.card.stats.numeric;
-
-        if (
-          (x1 > x2 && stats.left   > neighborStats.right)  ||
-          (x1 < x2 && stats.right  > neighborStats.left)   ||
-          (y1 > y2 && stats.top    > neighborStats.bottom) ||
-          (y1 < y2 && stats.bottom > neighborStats.top)
-        ) {
-          // If so, flip the neighbor's color
-          const neighborColor = neighbor.color;
-          neighbor.color = color;
-
-          // and update the scores
-          newScores[color] += 1;
-          newScores[neighborColor] -= 1;
-        }
-      }
-    });
-
-    return [newSquares, newScores];
   }
 
   // Increments the turn # and switches play to the opposite color
