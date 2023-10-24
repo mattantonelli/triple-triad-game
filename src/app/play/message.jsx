@@ -9,7 +9,7 @@ export default function Message({ type, message, resetGame }) {
     return (
       <div className={styles.message}
         style={{
-          pointerEvents: type === "victory" ? "default" : "none",
+          pointerEvents: type === "victory" ? "all" : "none",
           cursor: type === "victory" ? "pointer" : "default"
         }}
         onClick={() => type === "victory" && resetGame()}>
