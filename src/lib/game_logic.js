@@ -64,7 +64,7 @@ async function flipNeighbor(played, neighbor, squares, setSquares, scores, setSc
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve();
-    }, 5000);
+    }, 500);
   });
 }
 
