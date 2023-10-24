@@ -68,6 +68,10 @@ async function flipNeighbor(played, neighbor, squares, setSquares, scores, setSc
   });
 }
 
+function logFlip(type, played, neighbor, x2, y2) {
+  console.log(`${type} Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
+}
+
 // Flips if the played card's stats exceed that of its neighbor on the adjacent side (e.g. 6 > 4)
 async function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats, x2, y2, squares, setSquares, scores, setScores) {
   if (
@@ -76,7 +80,7 @@ async function checkStandardFlip(played, stats, x1, y1, neighbor, neighborStats,
     (y1 > y2 && stats.top    > neighborStats.bottom) ||
     (y1 < y2 && stats.bottom > neighborStats.top)
   ) {
-    console.log(`Standard Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
+    logFlip("Standard", played, neighbor, x2, y2);
     await flipNeighbor(played, neighbor, squares, setSquares, scores, setScores);
   }
 }
@@ -89,8 +93,8 @@ async function checkFallenAceFlip(played, stats, x1, y1, neighbor, neighborStats
     (y1 > y2 && stats.top    === 1 && neighborStats.bottom === 10) ||
     (y1 < y2 && stats.bottom === 1 && neighborStats.top === 10)
   ) {
-    console.log(`Fallen Ace Flip: ${neighbor.card.name} (${x2}, ${y2}) from ${neighbor.color} to ${played.color}`);
-    flipNeighbor(played, neighbor, squares, setSquares, scores, setScores);
+    logFlip("Fallen Ace", played, neighbor, x2, y2);
     await showMessage("rules", "fallen_ace", 750);
+    await flipNeighbor(played, neighbor, squares, setSquares, scores, setScores);
   }
 }
