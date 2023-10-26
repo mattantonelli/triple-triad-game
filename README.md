@@ -6,7 +6,7 @@ Final Fantasy XIV's Triple Triad running on [Next.js](https://nextjs.org/). This
 
 ```bash
 git clone https://github.com/mattantonelli/triple-triad-game
-cd triple-triad
+cd triple-triad-game
 npm install
 npm run dev
 ```
