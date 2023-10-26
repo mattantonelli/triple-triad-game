@@ -17,7 +17,8 @@ const adjacentIndexes = [
 // Maps rule strings to their flip logic functions
 const ruleFunctions = {
   "Fallen Ace": isFallenAceFlip,
-  "Reverse": isReverseFlip
+  "Reverse": isReverseFlip,
+  "Same": isSameFlip
 };
 
 // Returns [x, y] coordinates corresponding to the square's index on the board
@@ -110,6 +111,12 @@ function isStandardFlip(cardValue, neighborValue) {
 // Flips if the played card's stats are lower than that of its neighbor on the adjacent side (e.g. 4 < 6)
 function isReverseFlip(cardValue, neighborValue) {
   return cardValue < neighborValue;
+}
+
+
+// Flips if the played card's stats are equal to its neighbor on the adjacent side (e.g. 4 = 4)
+function isSameFlip(cardValue, neighborValue) {
+  return cardValue === neighborValue;
 }
 
 // Flips if the played card has a 1 adjacent to its neighbor's A (1 = A)
