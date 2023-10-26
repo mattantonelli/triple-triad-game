@@ -2,7 +2,7 @@ import styles from "./styles.module.scss";
 
 // TODO: Implement all of these to start
 // const rules = ["Chaos", "Fallen Ace", "Order", "Plus", "Reverse", "Same"];
-const rules = ["Fallen Ace", "Reverse", "Same"];
+const rules = ["Fallen Ace", "Plus", "Reverse", "Same"];
 
 export default function Rules({ rule, selectRule, isPlayStarted }) {
  return (

@@ -42,7 +42,13 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
 
   // Then check for any remaining flips based on the active rule
   if (rule) {
-    flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
+    if (rule === "Plus") {
+      // Handle the complex Plus rule if it is in play
+      flips = checkPlusFlips(played, squares, index);
+    } else {
+      // Otherwise, evaluate the rule against each neighbor with the appropriate function
+      flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
+    }
 
     if (flips.length > 0) {
       await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
@@ -75,6 +81,46 @@ function checkNeighbors(played, isFlip, squares, index) {
       } else {
         return isFlip(stats.bottom, neighborStats.top);
       }
+    }
+  });
+}
+
+// Adds up all adjacent values and flips the cards if this value matches 2+ times
+function checkPlusFlips(played, squares, index) {
+  const neighbors = adjacentIndexes[index];
+  const [x1, y1] = indexToCoordinates(index);
+  const stats = played.card.stats.numeric;
+
+  // Sum all of the adjacent sides for the played card's neighbors
+  const sums = neighbors.map((neighborIndex) => {
+    const neighbor = squares[neighborIndex];
+
+    if (neighbor.card) {
+      const [x2, y2] = indexToCoordinates(neighborIndex);
+      const neighborStats = neighbor.card.stats.numeric;
+
+      if (x1 > x2) {
+        return stats.left + neighborStats.right;
+      } else if (x1 < x2) {
+        return stats.right + neighborStats.left;
+      } else if (y1 > y2) {
+        return stats.top + neighborStats.bottom;
+      } else {
+        return stats.bottom + neighborStats.top;
+      }
+    }
+  });
+
+  // Count the occurrence of each sum
+  const counts = {};
+  for (const sum of sums) {
+    counts[sum] = counts[sum] ? counts[sum] + 1 : 1;
+  }
+
+  // And return the indexes for any neighbors where the count > 1
+  return neighbors.filter((neighbor, i) => {
+    if (sums[i] && counts[sums[i]] > 1) {
+      return neighbor;
     }
   });
 }
@@ -112,7 +158,6 @@ function isStandardFlip(cardValue, neighborValue) {
 function isReverseFlip(cardValue, neighborValue) {
   return cardValue < neighborValue;
 }
-
 
 // Flips if the played card's stats are equal to its neighbor on the adjacent side (e.g. 4 = 4)
 function isSameFlip(cardValue, neighborValue) {
