@@ -26,7 +26,7 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
 
   // Check for standard flips first if the Reverse rule is not in play
   if (rule !== "Reverse") {
-    flips = checkNeighbors(played, checkStandardFlip, squares, index);
+    flips = checkNeighbors(played, isStandardFlip, squares, index);
 
     if (flips.length > 0) {
       await flipCards(played, flips, squares, setSquares, scores, setScores);
@@ -38,10 +38,10 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
   // Then check for any remaining flips based on active rules
   switch(rule) {
     case("Reverse"):
-      flips = checkNeighbors(played, checkReverseFlip, squares, index);
+      flips = checkNeighbors(played, isReverseFlip, squares, index);
       break;
     case("Fallen Ace"):
-      flips = checkNeighbors(played, checkFallenAceFlip, squares, index);
+      flips = checkNeighbors(played, isFallenAceFlip, squares, index);
       break;
   }
 
@@ -53,7 +53,7 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
 }
 
 // Checks if neighbors of an index have been flipped using the given function
-function checkNeighbors(played, checkFlip, squares, index) {
+function checkNeighbors(played, isFlip, squares, index) {
   return adjacentIndexes[index].filter((neighborIndex) => {
     const neighbor = squares[neighborIndex];
 
@@ -66,8 +66,8 @@ function checkNeighbors(played, checkFlip, squares, index) {
       const stats = played.card.stats.numeric;
       const neighborStats = neighbor.card.stats.numeric;
 
-      // Check for flips using the given function
-      return checkFlip(stats, x1, y1, neighborStats, x2, y2);
+      // Check if the neighbor is flipped by the given function
+      return isFlip(stats, x1, y1, neighborStats, x2, y2);
     }
   });
 }
@@ -97,7 +97,7 @@ async function flipCards(played, flippedIndexes, squares, setSquares, scores, se
 }
 
 // Flips if the played card's stats exceed that of its neighbor on the adjacent side (e.g. 6 > 4)
-function checkStandardFlip(stats, x1, y1, neighborStats, x2, y2) {
+function isStandardFlip(stats, x1, y1, neighborStats, x2, y2) {
   return (x1 > x2 && stats.left   > neighborStats.right)  ||
          (x1 < x2 && stats.right  > neighborStats.left)   ||
          (y1 > y2 && stats.top    > neighborStats.bottom) ||
@@ -105,7 +105,7 @@ function checkStandardFlip(stats, x1, y1, neighborStats, x2, y2) {
 }
 
 // Flips if the played card's stats are lower than that of its neighbor on the adjacent side (e.g. 4 < 6)
-function checkReverseFlip(stats, x1, y1, neighborStats, x2, y2) {
+function isReverseFlip(stats, x1, y1, neighborStats, x2, y2) {
   return (x1 > x2 && stats.left   < neighborStats.right)  ||
          (x1 < x2 && stats.right  < neighborStats.left)   ||
          (y1 > y2 && stats.top    < neighborStats.bottom) ||
@@ -113,7 +113,7 @@ function checkReverseFlip(stats, x1, y1, neighborStats, x2, y2) {
 }
 
 // Flips if the played card has a 1 adjacent to its neighbor's A (1 = A)
-function checkFallenAceFlip(stats, x1, y1, neighborStats, x2, y2) {
+function isFallenAceFlip(stats, x1, y1, neighborStats, x2, y2) {
   return (x1 > x2 && stats.left   === 1 && neighborStats.right === 10)  ||
          (x1 < x2 && stats.right  === 1 && neighborStats.left === 10)   ||
          (y1 > y2 && stats.top    === 1 && neighborStats.bottom === 10) ||
