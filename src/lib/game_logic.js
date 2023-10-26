@@ -66,8 +66,16 @@ function checkNeighbors(played, isFlip, squares, index) {
       const stats = played.card.stats.numeric;
       const neighborStats = neighbor.card.stats.numeric;
 
-      // Check if the neighbor is flipped by the given function
-      return isFlip(stats, x1, y1, neighborStats, x2, y2);
+      // Check if the neighbor is flipped by the given function by comparing the appropriate sides
+      if (x1 > x2) {
+        return isFlip(stats.left, neighborStats.right);
+      } else if (x1 < x2) {
+        return isFlip(stats.right, neighborStats.left);
+      } else if (y1 > y2) {
+        return isFlip(stats.top, neighborStats.bottom);
+      } else {
+        return isFlip(stats.bottom, neighborStats.top);
+      }
     }
   });
 }
@@ -97,25 +105,16 @@ async function flipCards(played, flippedIndexes, squares, setSquares, scores, se
 }
 
 // Flips if the played card's stats exceed that of its neighbor on the adjacent side (e.g. 6 > 4)
-function isStandardFlip(stats, x1, y1, neighborStats, x2, y2) {
-  return (x1 > x2 && stats.left   > neighborStats.right)  ||
-         (x1 < x2 && stats.right  > neighborStats.left)   ||
-         (y1 > y2 && stats.top    > neighborStats.bottom) ||
-         (y1 < y2 && stats.bottom > neighborStats.top);
+function isStandardFlip(cardValue, neighborValue) {
+  return cardValue > neighborValue;
 }
 
 // Flips if the played card's stats are lower than that of its neighbor on the adjacent side (e.g. 4 < 6)
-function isReverseFlip(stats, x1, y1, neighborStats, x2, y2) {
-  return (x1 > x2 && stats.left   < neighborStats.right)  ||
-         (x1 < x2 && stats.right  < neighborStats.left)   ||
-         (y1 > y2 && stats.top    < neighborStats.bottom) ||
-         (y1 < y2 && stats.bottom < neighborStats.top);
+function isReverseFlip(cardValue, neighborValue) {
+  return cardValue < neighborValue;
 }
 
 // Flips if the played card has a 1 adjacent to its neighbor's A (1 = A)
-function isFallenAceFlip(stats, x1, y1, neighborStats, x2, y2) {
-  return (x1 > x2 && stats.left   === 1 && neighborStats.right === 10)  ||
-         (x1 < x2 && stats.right  === 1 && neighborStats.left === 10)   ||
-         (y1 > y2 && stats.top    === 1 && neighborStats.bottom === 10) ||
-         (y1 < y2 && stats.bottom === 1 && neighborStats.top === 10);
+function isFallenAceFlip(cardValue, neighborValue) {
+  return cardValue === 1 && neighborValue === 10;
 }
