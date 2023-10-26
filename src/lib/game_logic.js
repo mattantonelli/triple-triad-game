@@ -14,6 +14,12 @@ const adjacentIndexes = [
   [5, 7]
 ];
 
+// Maps rule strings to their flip logic functions
+const ruleFunctions = {
+  "Fallen Ace": isFallenAceFlip,
+  "Reverse": isReverseFlip
+};
+
 // Returns [x, y] coordinates corresponding to the square's index on the board
 function indexToCoordinates(index) {
   return [index % 3, Math.floor(index / 3)];
@@ -33,22 +39,14 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
     }
   }
 
-  flips = [];
+  // Then check for any remaining flips based on the active rule
+  if (rule) {
+    flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
 
-  // Then check for any remaining flips based on active rules
-  switch(rule) {
-    case("Reverse"):
-      flips = checkNeighbors(played, isReverseFlip, squares, index);
-      break;
-    case("Fallen Ace"):
-      flips = checkNeighbors(played, isFallenAceFlip, squares, index);
-      break;
-  }
-
-  // If cards were flipped based on a rule, display a message then flip them
-  if (flips.length > 0) {
-    await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
-    await flipCards(played, flips, squares, setSquares, scores, setScores);
+    if (flips.length > 0) {
+      await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
+      await flipCards(played, flips, squares, setSquares, scores, setScores);
+    }
   }
 }
 
