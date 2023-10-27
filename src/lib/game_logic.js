@@ -29,48 +29,59 @@ function indexToCoordinates(index) {
 // Tries to flip the neighbors for a card played at the given index
 export async function checkFlips(squares, setSquares, scores, setScores, rule, index, showMessage) {
   const played = squares[index];
-  let flips;
+  let flips, comboFlips;
+
+  // Check for Plus flips first since they take priority
+  if (rule === "Plus") {
+    comboFlips = checkPlusFlips(played, squares, index);
+  }
 
   // Check for standard flips first if the Reverse rule is not in play
   if (rule !== "Reverse") {
     flips = checkNeighbors(played, isStandardFlip, squares, index);
+
+    // Exclude Plus flips since we must flip them later to potentially execute combos
+    flips = flips.filter((i) => !comboFlips.includes(i));
 
     if (flips.length > 0) {
       await flipCards(played, flips, squares, setSquares, scores, setScores);
     }
   }
 
-  // Then check for any remaining flips based on the active rule
-  if (rule) {
-    if (rule === "Plus") {
-      // Handle the complex Plus rule if it is in play
-      flips = checkPlusFlips(played, squares, index);
-    } else {
-      // Otherwise, evaluate the rule against each neighbor with the appropriate function
-      flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
-    }
+  // Check for any remaining flips based on the active rule
+  if (rule && rule !== "Plus" && rule !== "Same") {
+    flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
 
     // If any cards were flipped based on a rule
     if (flips.length > 0) {
       // Display the rule message and flip them
       await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
       await flipCards(played, flips, squares, setSquares, scores, setScores);
+    }
+  }
 
-      // If the rule is Plus or Same, try to execute combo flips from the flipped neighbors.
-      if (rule === "Plus" || rule === "Same") {
-        // Keep checking for combo flips until no more cards can be flipped.
-        while (flips.length > 0) {
-          // Try to execute standard flips from each flipped card
-          flips = flips.flatMap((index) => {
-            return checkNeighbors(squares[index], isStandardFlip, squares, index);
-          });
+  // Check for Same flips which are also combo-able but do not need priority
+  if (rule === "Same") {
+    comboFlips = checkNeighbors(played, isSameFlip, squares, index);
+  }
 
-          // If any cards were combo'd, display the combo message and flip them.
-          if (flips.length > 0) {
-            await showMessage("rules", "combo", 750);
-            await flipCards(played, flips, squares, setSquares, scores, setScores);
-          }
-        }
+  // Execute Plus/Same flips, then check for combos
+  if (comboFlips.length > 0) {
+    // Display the rule message and flip them
+    await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
+    await flipCards(played, comboFlips, squares, setSquares, scores, setScores);
+
+    // Keep checking for combo flips until no more cards can be flipped.
+    while (comboFlips.length > 0) {
+      // Try to execute standard flips from each flipped card
+      comboFlips = comboFlips.flatMap((index) => {
+        return checkNeighbors(squares[index], isStandardFlip, squares, index);
+      });
+
+      // If any cards were combo'd, display the combo message and flip them.
+      if (comboFlips.length > 0) {
+        await showMessage("rules", "combo", 750);
+        await flipCards(played, comboFlips, squares, setSquares, scores, setScores);
       }
     }
   }
