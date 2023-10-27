@@ -23,6 +23,14 @@ header {
   }
 }
 
+a {
+  color: #eee;
+
+  &:hover, &:active, &:focus {
+    color: #fff;
+  }
+}
+
 .form-select, .form-control {
   width: auto;
   background-color: #eee;
