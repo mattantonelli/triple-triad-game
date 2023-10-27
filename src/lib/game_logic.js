@@ -50,9 +50,28 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
       flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
     }
 
+    // If any cards were flipped based on a rule
     if (flips.length > 0) {
+      // Display the rule message and flip them
       await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
       await flipCards(played, flips, squares, setSquares, scores, setScores);
+
+      // If the rule is Plus or Same, try to execute combo flips from the flipped neighbors.
+      if (rule === "Plus" || rule === "Same") {
+        // Keep checking for combo flips until no more cards can be flipped.
+        while (flips.length > 0) {
+          // Try to execute standard flips from each flipped card
+          flips = flips.flatMap((index) => {
+            return checkNeighbors(squares[index], isStandardFlip, squares, index);
+          });
+
+          // If any cards were combo'd, display the combo message and flip them.
+          if (flips.length > 0) {
+            await showMessage("rules", "combo", 750);
+            await flipCards(played, flips, squares, setSquares, scores, setScores);
+          }
+        }
+      }
     }
   }
 }
