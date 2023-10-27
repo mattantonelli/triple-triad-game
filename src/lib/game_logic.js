@@ -29,7 +29,7 @@ function indexToCoordinates(index) {
 // Tries to flip the neighbors for a card played at the given index
 export async function checkFlips(squares, setSquares, scores, setScores, rule, index, showMessage) {
   const played = squares[index];
-  let flips, comboFlips;
+  let flips, comboFlips = [];
 
   // Check for Plus flips first since they take priority
   if (rule === "Plus") {
