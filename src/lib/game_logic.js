@@ -136,10 +136,10 @@ function checkPlusFlips(played, squares, index) {
     counts[sum] = counts[sum] ? counts[sum] + 1 : 1;
   }
 
-  // And return the indexes for any neighbors where the count > 1
-  return neighbors.filter((neighbor, i) => {
-    if (sums[i] && counts[sums[i]] > 1) {
-      return neighbor;
+  // And return the indexes for any neighbors where the color is different and the count > 1
+  return neighbors.filter((neighborIndex, i) => {
+    if (squares[neighborIndex].color !== played.color && sums[i] && counts[sums[i]] > 1) {
+      return neighborIndex;
     }
   });
 }
