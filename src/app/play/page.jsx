@@ -7,15 +7,11 @@ export const metadata = {
 };
 
 export default async function Play() {
-  ["red", "blue"].map((color) => {
-    ReactDOM.preload(`https://triad.raelys.com/images/cards/large_${color}.png`, { as: "image" });
-    ReactDOM.preload(`/images/messages/turns/${color}_turn.png`, { as: "image" });
-  });
+  // Preload large card images from ATTT before decks are selected
+  ReactDOM.preload("https://triad.raelys.com/images/cards/large_blue.png", { as: "image" });
+  ReactDOM.preload("https://triad.raelys.com/images/cards/large_red.png",  { as: "image" });
 
-  ["chaos", "fallen_ace", "order", "plus", "reverse", "same", "combo"].map((rule) => {
-    ReactDOM.preload(`/images/messages/rules/${rule}.png`, { as: "image" });
-  });
-
+  // Fetch the decks and cards from the ATTT API
   const decks = await getNpcDecks();
   const cards = await getCardsById();
 

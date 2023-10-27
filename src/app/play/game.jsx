@@ -12,6 +12,7 @@ import TurnIndicator from "./turnIndicator";
 import Message from "./message";
 import StartButton from "./startButton";
 import { checkFlips } from "@/lib/game_logic";
+import MessagePreload from "./messagePreload";
 
 // TODO: Refactor functions passed to children as useCallback hooks to avoid re-rendering children
 // https://react.dev/reference/react/useCallback#usage
@@ -151,21 +152,22 @@ export default function Game({ cards, decks, environment }) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-    <div className={`d-flex ${styles.gameMat} mx-auto`}>
-      <StartButton isVisible={canStart()} setCanPlay={setCanPlay} setCurrentPlayer={setCurrentPlayer}
-        setTurn={setTurn} showMessage={showMessage} />
-      <Message {...message} resetGame={resetGame} />
-      <TurnIndicator currentPlayer={currentPlayer} />
-      <div className="d-flex flex-column">
-        <Score scores={scores} />
-        {players[0]}
+      <div className={`d-flex ${styles.gameMat} mx-auto`}>
+        <StartButton isVisible={canStart()} setCanPlay={setCanPlay} setCurrentPlayer={setCurrentPlayer}
+          setTurn={setTurn} showMessage={showMessage} />
+        <Message {...message} resetGame={resetGame} />
+        <TurnIndicator currentPlayer={currentPlayer} />
+        <div className="d-flex flex-column">
+          <Score scores={scores} />
+          {players[0]}
+        </div>
+        <Board squares={squares} playCard={playCard} />
+        <div className="d-flex flex-column">
+          <Rules rule={rule} selectRule={selectRule} isPlayStarted={isPlayStarted} />
+          {players[1]}
+        </div>
       </div>
-      <Board squares={squares} playCard={playCard} />
-      <div className="d-flex flex-column">
-        <Rules rule={rule} selectRule={selectRule} isPlayStarted={isPlayStarted} />
-        {players[1]}
-      </div>
-    </div>
-  </DndProvider>
+      <MessagePreload />
+    </DndProvider>
   );
 }

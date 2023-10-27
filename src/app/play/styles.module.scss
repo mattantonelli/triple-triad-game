@@ -132,3 +132,12 @@
     transition: 1s background;
   }
 }
+
+.preLoad {
+  position: fixed;
+  pointer-events: none;
+
+  img {
+    opacity: 0;
+  }
+}
