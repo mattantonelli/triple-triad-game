@@ -49,7 +49,7 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
   }
 
   // Check for any remaining flips based on the active rule
-  if (rule && rule !== "Plus" && rule !== "Same") {
+  if (rule && Object.keys(ruleFunctions).includes(rule)) {
     flips = checkNeighbors(played, ruleFunctions[rule], squares, index);
 
     // If any cards were flipped based on a rule
