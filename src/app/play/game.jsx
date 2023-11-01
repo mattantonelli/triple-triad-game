@@ -33,7 +33,7 @@ export default function Game({ cards, decks, environment }) {
       setCanPlay(true);
       setTurn(1);
       setCurrentPlayer("blue");
-      setRule("Plus");
+      setRule("Order");
       setPlayerCards(
         { blue: "338,92,233,341,251".split(",").map((id) => cards[id]),
           red:  "331,332,130,94,46".split(",").map((id) => cards[id]) }
@@ -78,6 +78,20 @@ export default function Game({ cards, decks, environment }) {
   // Selects the rule to be used
   function selectRule(rule) {
     setRule(rule);
+  }
+
+  // Determines the cards that can be played from a player's hand, based on the active rule
+  function playableCards(color) {
+    const playable = playerCards[color];
+
+    if (rule === "Order") {
+      // Order requires cards be played in deck order from first to last
+      const playableIndex = Math.floor((turn - 1) / 2);
+      return [playable[playableIndex]];
+    } else {
+      // If no valid rule is active, all cards are playable
+      return playable;
+    }
   }
 
   // Updates a player's list of played cards when a card is played so we can toggle visibility
@@ -147,7 +161,7 @@ export default function Game({ cards, decks, environment }) {
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} cards={playerCards[color]} playedCards={playedCards[color]}
       currentPlayer={currentPlayer} isPlayStarted={isPlayStarted} canPlay={canPlay}
-      decks={decks} color={color} selectDeck={selectDeck} />;
+      decks={decks} color={color} playableCards={playableCards(color)} selectDeck={selectDeck} />;
   });
 
   return (

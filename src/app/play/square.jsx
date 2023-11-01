@@ -23,7 +23,7 @@ export default function Square({ index, card, color, flipped, playCard }) {
   return (
     <div className={`${styles.playSquare} ${flipped ? styles[`${color}Flip`] : ""}`} ref={dropRef}
       style={{backgroundColor: isOver && isEmpty() ? "rgba(0, 0, 0, 0.3)" : "rgba(0, 0, 0, 0.1)"}}>
-      {card && <PlayCard card={card} color={color} isDraggable={false} isVisible={true} />}
+      {card && <PlayCard card={card} color={color} isDraggable={false} isPlayed={true} isVisible={true} />}
     </div>
   );
 }

@@ -124,6 +124,8 @@
 }
 
 .playCard {
+  transition: 0.25s filter;
+
   &.canDrag:hover {
     transform: translateY(-5px);
   }
