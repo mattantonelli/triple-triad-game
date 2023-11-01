@@ -6,8 +6,18 @@ export async function getCards() {
   const res =  await fetch(CARD_DATA_URL, { next: { revalidate: 86400 }});
   const data = await res.json();
 
-  // Sort the cards by their in-game order
-  return data.results.sort((a, b) => (a.order_group - b.order_group) || (a.order - b.order));
+  // Sort the cards by their in-game order and return the required fields
+  return data.results
+    .sort((a, b) => (a.order_group - b.order_group) || (a.order - b.order))
+    .map((card) => {
+      return {
+        id: card.id,
+        name: card.name,
+        stats: card.stats,
+        stars: card.stars,
+        type: card.type
+      };
+    });
 }
 
 // Returns a dictionary of cards organized by ID for easy lookups
