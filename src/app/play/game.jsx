@@ -20,8 +20,8 @@ export default function Game({ cards, decks, environment }) {
   const [canPlay, setCanPlay] = useState(false);
   const [playerCards, setPlayerCards] = useState({ blue: [], red: [] });
   const [turn, setTurn] = useState(0);
-  const [currentPlayer, setCurrentPlayer] = useState();
-  const [rule, setRule] = useState();
+  const [currentPlayer, setCurrentPlayer] = useState(null);
+  const [rule, setRule] = useState("");
   const [playedCards, setPlayedCards] = useState({ blue: [], red: [] });
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
@@ -47,6 +47,7 @@ export default function Game({ cards, decks, environment }) {
     setScores({ blue: 5, red: 5 });
     setSquares(Array(9).fill({}));
     setTurn(0);
+    setCurrentPlayer(null);
     setCanPlay(false);
     setMessage(null);
   }
