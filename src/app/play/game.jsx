@@ -171,7 +171,7 @@ export default function Game({ cards, decks, environment }) {
 
   const players = ["blue", "red"].map((color) => {
     return <Player key={color} cards={playerCards[color]} playedCards={playedCards[color]}
-      currentPlayer={currentPlayer} isPlayStarted={isPlayStarted} canPlay={canPlay}
+      currentPlayer={currentPlayer} isPlayStarted={isPlayStarted()} canPlay={canPlay}
       decks={decks} color={color} playableCards={playableCards(color)} selectDeck={selectDeck} />;
   });
 

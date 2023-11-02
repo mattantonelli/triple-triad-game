@@ -19,7 +19,7 @@ export default function Player({ cards, playedCards, playableCards, decks, selec
 
   return (
     <div className={`d-flex flex-column ${styles.player}`}>
-      <select className="form-select" onChange={e => selectDeck(color, e.target.value)} disabled={isPlayStarted()}>
+      <select className="form-select" onChange={e => selectDeck(color, e.target.value)} disabled={isPlayStarted}>
         <option value="">Select a deck</option>
         {decks.map((deck, i) => {
           return <option key={i} value={deck.cards}>{deck.name}</option>;
@@ -31,7 +31,7 @@ export default function Player({ cards, playedCards, playableCards, decks, selec
           const [isPlayed, isPlayable] = [isCardPlayed(card), isCardPlayable(card)];
           return <PlayCard key={card.id} card={card} color={color} isVisible={!isPlayed}
             isDraggable={!isPlayed && canPlay && isPlayable && isPlayerTurn()}
-            isPlayable={isPlayerTurn() && isPlayable} />;
+            isPlayable={!isPlayStarted || (isPlayerTurn() && isPlayable)} />;
         })}
       </div>
     </div>
