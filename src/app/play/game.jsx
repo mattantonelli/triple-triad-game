@@ -33,7 +33,7 @@ export default function Game({ cards, decks, environment }) {
       setCanPlay(true);
       setTurn(1);
       setCurrentPlayer("blue");
-      setRule("Order");
+      setRule("Chaos");
       setPlayerCards(
         { blue: "338,92,233,341,251".split(",").map((id) => cards[id]),
           red:  "331,332,130,94,46".split(",").map((id) => cards[id]) }
@@ -83,9 +83,19 @@ export default function Game({ cards, decks, environment }) {
 
   // Determines the cards that can be played from a player's hand, based on the active rule
   function playableCards(color) {
+    // No cards are playable while play is paused
+    if (!canPlay) {
+      return [];
+    }
+
     const playable = playerCards[color];
 
-    if (rule === "Order") {
+    if (rule === "Chaos") {
+      // Chaos selects a random card from the deck
+      const unplayed = playable.filter((card) => !playedCards[color].includes(card));
+      const playableIndex = Math.floor(Math.random() * unplayed.length);
+      return [unplayed[playableIndex]];
+    } else if (rule === "Order") {
       // Order requires cards be played in deck order from first to last
       const playableIndex = Math.floor((turn - 1) / 2);
       return [playable[playableIndex]];
