@@ -27,7 +27,7 @@ function indexToCoordinates(index) {
 }
 
 // Tries to flip the neighbors for a card played at the given index
-export async function checkFlips(squares, setSquares, scores, setScores, rule, index, showMessage) {
+export async function processFlips(squares, setSquares, scores, setScores, rule, index, showMessage) {
   const played = squares[index];
   let flips, comboFlips = [];
 
@@ -60,11 +60,6 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
     }
   }
 
-  // Check for Same flips which are also combo-able but do not need priority
-  if (rule === "Same") {
-    comboFlips = checkNeighbors(played, isSameFlip, squares, index);
-  }
-
   // Execute Plus/Same flips, then check for combos
   if (comboFlips.length > 0) {
     // Display the rule message and flip them
@@ -85,6 +80,30 @@ export async function checkFlips(squares, setSquares, scores, setScores, rule, i
       }
     }
   }
+}
+
+// Returns the number of initial flips made by a card played at the given index
+export async function countFlips(squares, rule, index) {
+  const played = squares[index];
+  let flips = [];
+
+  // Check for Plus flips first since they have special logic
+  if (rule === "Plus") {
+    flips = flips.concat(checkPlusFlips(played, squares, index));
+  }
+
+  // Check for standard flips first if the Reverse rule is not in play
+  if (rule !== "Reverse") {
+    flips = flips.concat(checkNeighbors(played, isStandardFlip, squares, index));
+  }
+
+  // Check for any remaining flips based on the active rule
+  if (rule && Object.keys(ruleFunctions).includes(rule)) {
+    flips = flips.concat(checkNeighbors(played, ruleFunctions[rule], squares, index));
+  }
+
+  // Return the number of unique flips
+  return new Set(flips).size;
 }
 
 // Checks if neighbors of an index have been flipped using the given function

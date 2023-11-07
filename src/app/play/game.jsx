@@ -11,8 +11,9 @@ import Rules from "./rules";
 import TurnIndicator from "./turnIndicator";
 import Message from "./message";
 import StartButton from "./startButton";
-import { checkFlips } from "@/lib/game_logic";
+import { processFlips } from "@/lib/game_logic";
 import MessagePreload from "./messagePreload";
+import { processAITurn } from "@/lib/ai_logic";
 
 // TODO: Refactor functions passed to children as useCallback hooks to avoid re-rendering children
 // https://react.dev/reference/react/useCallback#usage
@@ -33,13 +34,22 @@ export default function Game({ cards, decks, environment }) {
       setCanPlay(true);
       setTurn(1);
       setCurrentPlayer("blue");
-      setRule("Chaos");
+      setRule("Plus");
       setPlayerCards(
         { blue: "338,92,233,341,251".split(",").map((id) => cards[id]),
           red:  "331,332,130,94,46".split(",").map((id) => cards[id]) }
       );
     }
   }, [setCanPlay, setTurn, setCurrentPlayer, setRule, setPlayedCards, cards, environment]);
+
+  // Process the AI's turn when it is the currentPlayer
+  useEffect(() => {
+    if (currentPlayer === "red") {
+      console.log("Red turn detected. Processing AI turn.");
+      processAITurn(squares, rule, playableCards, playCard);
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPlayer]);
 
   // Reset all game parameters
   function resetGame() {
@@ -82,9 +92,9 @@ export default function Game({ cards, decks, environment }) {
   }
 
   // Determines the cards that can be played from a player's hand, based on the active rule
-  function playableCards(color) {
-    // No cards are playable while play is paused
-    if (!canPlay) {
+  function playableCards(color, skipPlayCheck = false) {
+    // No cards are playable while play is paused, unless we choose to skip that check (for the AI)
+    if (!canPlay && !skipPlayCheck) {
       return [];
     }
 
@@ -127,7 +137,7 @@ export default function Game({ cards, decks, environment }) {
 
     // Try to flip its neighbors
     let newScores = {...scores};
-    await checkFlips(newSquares, setSquares, newScores, setScores, rule, index, showMessage);
+    await processFlips(newSquares, setSquares, newScores, setScores, rule, index, showMessage);
 
     if (turn === 9) {
       // If the game is over, calculate a winner and display the winning message
@@ -142,8 +152,9 @@ export default function Game({ cards, decks, environment }) {
       // Otherwise, move to the next turn
       incrementTurn();
 
-      // Re-enable play
-      setCanPlay(true);
+      if (color === "red") {
+        setCanPlay(true);
+      }
     }
   }
 
