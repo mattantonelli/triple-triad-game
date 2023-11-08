@@ -4,7 +4,8 @@ const AI_COLOR = "red";
 
 // Processes the "best" move for the AI based on the greatest number of initial flips
 export async function processAITurn(squares, rule, playableCards, playCard) {
-  const cards = playableCards(AI_COLOR, true);
+  // Retrieve the list of playable cards and shuffle them to introduce some entropy
+  const cards = playableCards(AI_COLOR, true).sort(() => Math.random() - 0.5);
   const startTime = Date.now();
   let bestMove = { card: {}, index: -1, flips: -1 };
 
@@ -29,6 +30,12 @@ export async function processAITurn(squares, rule, playableCards, playCard) {
     }
   }
 
+  // If the AI cannot flip any cards, pick an empty square at random instead of always
+  // playing a card in the first available square.
+  if (bestMove.flips === 0) {
+    bestMove.index = randomEmptySquare(squares);;
+  }
+
   // Ensure the AI has waited at least 1 second before making its move
   const processingTime = (Date.now() - startTime);
   if (processingTime < 1000) {
@@ -37,4 +44,17 @@ export async function processAITurn(squares, rule, playableCards, playCard) {
 
   // Play the best move
   await playCard(bestMove.card, AI_COLOR, bestMove.index);
+}
+
+// Returns a random empty square where a card may be played
+function randomEmptySquare(squares) {
+  let emptySquares = [];
+
+  squares.forEach((square, i) => {
+    if (!square.card) {
+      emptySquares.push(i);
+    }
+  });
+
+  return emptySquares.sort(() => Math.random() - 0.5)[0];
 }
