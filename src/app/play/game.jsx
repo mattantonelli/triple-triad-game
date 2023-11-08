@@ -14,6 +14,7 @@ import StartButton from "./startButton";
 import { processFlips } from "@/lib/game_logic";
 import MessagePreload from "./messagePreload";
 import { processAITurn } from "@/lib/ai_logic";
+import OpponentSelect from "./opponentSelect";
 
 // TODO: Refactor functions passed to children as useCallback hooks to avoid re-rendering children
 // https://react.dev/reference/react/useCallback#usage
@@ -27,6 +28,7 @@ export default function Game({ cards, decks, environment }) {
   const [scores, setScores] = useState({ blue: 5, red: 5 });
   const [squares, setSquares] = useState(Array(9).fill({}));
   const [message, setMessage] = useState(null);
+  const [opponent, setOpponent] = useState("ai");
 
   // Set initial values for quick testing purposes in the dev environment
   useEffect(() => {
@@ -34,6 +36,7 @@ export default function Game({ cards, decks, environment }) {
       setCanPlay(true);
       setTurn(1);
       setCurrentPlayer("blue");
+      setOpponent("ai"); // ai | global | local
       setRule("Plus");
       setPlayerCards(
         { blue: "338,92,233,341,251".split(",").map((id) => cards[id]),
@@ -42,9 +45,9 @@ export default function Game({ cards, decks, environment }) {
     }
   }, [setCanPlay, setTurn, setCurrentPlayer, setRule, setPlayedCards, cards, environment]);
 
-  // Process the AI's turn when it is the currentPlayer
+  // Process the AI's turn if it is active and its current turn
   useEffect(() => {
-    if (currentPlayer === "red") {
+    if (opponent === "ai" && currentPlayer === "red") {
       processAITurn(squares, rule, playableCards, playCard);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -152,7 +155,8 @@ export default function Game({ cards, decks, environment }) {
       // Otherwise, move to the next turn
       incrementTurn();
 
-      if (color === "red") {
+      // Resume play if playing locally or if the non-local opponent's turn is over
+      if (opponent === "local" || color === "red") {
         setCanPlay(true);
       }
     }
@@ -188,7 +192,10 @@ export default function Game({ cards, decks, environment }) {
 
   return (
     <DndProvider backend={HTML5Backend}>
-      <div className={`d-flex ${styles.gameMat} mx-auto`}>
+      <div className={`d-flex ${styles.topBar} justify-content-end`}>
+        <OpponentSelect opponent={opponent} setOpponent={setOpponent} isPlayStarted={isPlayStarted} />
+      </div>
+      <div className={`d-flex ${styles.gameMat}`}>
         <StartButton isVisible={canStart()} setCanPlay={setCanPlay} setCurrentPlayer={setCurrentPlayer}
           setTurn={setTurn} showMessage={showMessage} />
         <Message {...message} resetGame={resetGame} />

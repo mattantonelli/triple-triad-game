@@ -1,7 +1,14 @@
+.topBar {
+  position: relative;
+  width: 1122px;
+  margin: 0 auto;
+}
+
 .gameMat {
   position: relative;
   width: 1122px;
   height: 562px;
+  margin: 0 auto;
   padding: 44px 12px;
   background-image: url("../../../public/images/board.png");
 }
