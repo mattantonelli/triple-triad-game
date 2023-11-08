@@ -9,6 +9,10 @@ export default function StartButton({ isVisible, setCurrentPlayer, setCanPlay, s
     // Hide the button on press
     isPressed.current = true;
 
+    // The turn must be set before the current player to avoid weirdness in the turn state
+    // when the AI goes first.
+    setTurn(1);
+
     // Randomly determine the first player
     const firstPlayer = Math.random() < 0.5 ? "blue" : "red";
     setCurrentPlayer(firstPlayer);
@@ -18,7 +22,6 @@ export default function StartButton({ isVisible, setCurrentPlayer, setCanPlay, s
 
     // Start play
     setCanPlay(true);
-    setTurn(1);
 
     // Reset button visibility for the next game
     isPressed.current = false;
