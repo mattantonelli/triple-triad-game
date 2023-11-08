@@ -45,7 +45,6 @@ export default function Game({ cards, decks, environment }) {
   // Process the AI's turn when it is the currentPlayer
   useEffect(() => {
     if (currentPlayer === "red") {
-      console.log("Red turn detected. Processing AI turn.");
       processAITurn(squares, rule, playableCards, playCard);
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

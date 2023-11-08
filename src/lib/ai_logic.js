@@ -5,22 +5,15 @@ const AI_COLOR = "red";
 // Processes the "best" move for the AI based on the greatest number of initial flips
 export async function processAITurn(squares, rule, playableCards, playCard) {
   const cards = playableCards(AI_COLOR, true);
-  console.log(`Playable cards: ${cards.map((card) => card.name)}`);
   const startTime = Date.now();
   let bestMove = { card: {}, index: -1, flips: -1 };
-
-  // console.log(`Playable cards: ${cards.map((card) => card.name).join(", ")}`);
-  // console.log("Checking for best move...");
 
   // For each square on the board
   for(let i = 0; i < squares.length; i++) {
     // Skip occupied squares
     if (squares[i].card) {
-      // console.log(`Skipping ${i}`);
       continue;
     }
-
-    // console.log(`Checking for flips @ ${i}`);
 
     // For each playable card in the AI's hand
     for (const card of cards) {
@@ -28,11 +21,9 @@ export async function processAITurn(squares, rule, playableCards, playCard) {
       let newSquares = squares.map((square) => ({...square}));
       newSquares[i] = { color: AI_COLOR, card: card };
       const flips = await countFlips(newSquares, rule, i);
-      // console.log(`${card.name}: ${flips} flips`);
 
       // If this number exceeds the number of cards flipped by the best move, save it
       if (flips > bestMove.flips) {
-        // console.log(`Current best move:\n  ${card.name} @ ${i} = ${flips} flips`);
         bestMove = { card: card, index: i, flips: flips };
       }
     }
