@@ -97,7 +97,8 @@ export default function Game({ cards, decks, environment }) {
       return [];
     }
 
-    const playable = playerCards[color];
+    // Start with a list of cards that are still in the player's hand
+    const playable = playerCards[color].filter((card) => !playedCards[color].includes(card));
 
     if (rule === "Chaos") {
       // Chaos selects a random card from the deck
