@@ -1,6 +1,7 @@
 import ReactDOM from "react-dom";
 import Game from "./game";
 import { getCardsById, getNpcDecks } from "@/lib/data";
+import Link from "next/link";
 
 export const metadata = {
   title: "Play"
@@ -23,10 +24,7 @@ export default async function Play() {
         <div className="card-body pb-0">
           <ul>
             <li>Select a deck for each player.</li>
-            <li>
-              Optionally, select a rule. The rules are explained&nbsp;
-              <a href="https://na.finalfantasyxiv.com/lodestone/playguide/contentsguide/goldsaucer/tripletriad#anchor_004" target="_blank">here</a>.
-            </li>
+            <li>Optionally, select a rule. The rules are explained <Link href="/rules">here</Link>.</li>
             <li>Players take turns placing their cards on the board.</li>
             <li>Flip your opponent&apos;s cards by playing a higher value on an adjacent side.</li>
             <li>The player with the most flipped cards wins!</li>

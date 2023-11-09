@@ -35,6 +35,7 @@ export default function RootLayout({ children }) {
               <div className="collapse navbar-collapse">
                 <div className="navbar-nav">
                   <Link href="/play" className="nav-link">Play</Link>
+                  <Link href="/rules" className="nav-link">Rules</Link>
                   <Link href="/cards" className="nav-link">Cards</Link>
                   <Link href="/npcs" className="nav-link">NPCs</Link>
                 </div>
