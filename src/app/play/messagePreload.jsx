@@ -6,7 +6,7 @@ import styles from "./styles.module.scss";
 export default function MessagePreload() {
   return (
     <div className={styles.preLoad}>
-      {["chaos", "fallen_ace", "order", "plus", "reverse", "same", "combo"].map((rule) => {
+      {["chaos", "fallen_ace", "order", "plus", "same", "combo"].map((rule) => {
         return <Image key={rule} src={`/images/messages/rules/${rule}.png`} width="600" height="90"
           alt="Image preloaded for later use" aria-hidden="true" />;
       })}

@@ -54,8 +54,12 @@ export async function processFlips(squares, setSquares, scores, setScores, rule,
 
     // If any cards were flipped based on a rule
     if (flips.length > 0) {
-      // Display the rule message and flip them
-      await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
+      // Display the rule message unless it was Reverse
+      if (rule !== "Reverse") {
+        await showMessage("rules", rule.toLowerCase().replace(" ", "_"), 750);
+      }
+
+      // and flip the cards
       await flipCards(played, flips, squares, setSquares, scores, setScores);
     }
   }
