@@ -37,6 +37,7 @@ export default function RootLayout({ children }) {
                   <Link href="/play" className="nav-link">Play</Link>
                   <Link href="/rules" className="nav-link">Rules</Link>
                   <Link href="/cards" className="nav-link">Cards</Link>
+                  <Link href="/decks" className="nav-link">Decks</Link>
                   <Link href="/npcs" className="nav-link">NPCs</Link>
                 </div>
               </div>
