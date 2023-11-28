@@ -110,8 +110,7 @@ export default function Game({ cards, decks, environment }) {
       return [unplayed[playableIndex]];
     } else if (rule === "Order") {
       // Order requires cards be played in deck order from first to last
-      const playableIndex = Math.floor((turn - 1) / 2);
-      return [playable[playableIndex]];
+      return [playable[0]];
     } else {
       // If no valid rule is active, all cards are playable
       return playable;
