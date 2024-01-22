@@ -4,7 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "triad.raelys.com"
+        hostname: "ffxivcollect.com"
       }
     ]
   }

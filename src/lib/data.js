@@ -1,5 +1,5 @@
-const CARD_DATA_URL = "https://triad.raelys.com/api/cards";
-const DECK_DATA_URL = "https://triad.raelys.com/api/npcs?deck=1";
+const CARD_DATA_URL = "https://ffxivcollect.com/api/triad/cards";
+const DECK_DATA_URL = "https://ffxivcollect.com/api/triad/npcs?deck=1";
 
 // Returns a list of cards from the ATTT API
 export async function getCards() {

@@ -1,6 +1,6 @@
 # Triple Triad Online
 
-Final Fantasy XIV's Triple Triad running on [Next.js](https://nextjs.org/). This application is a work in progress. Data provided by [Another Triple Triad Tracker](https://triad.raelys.com/).
+Final Fantasy XIV's Triple Triad running on [Next.js](https://nextjs.org/). This application is a work in progress. Data provided by [FFXIV Collect](https://ffxivcollect.com/).
 
 ## Installation
 

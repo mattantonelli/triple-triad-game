@@ -9,8 +9,8 @@ export const metadata = {
 
 export default async function Play() {
   // Preload large card images from ATTT before decks are selected
-  ReactDOM.preload("https://triad.raelys.com/images/cards/large_blue.png", { as: "image" });
-  ReactDOM.preload("https://triad.raelys.com/images/cards/large_red.png",  { as: "image" });
+  ReactDOM.preload("https://ffxivcollect.com/images/cards-blue.png", { as: "image" });
+  ReactDOM.preload("https://ffxivcollect.com/images/cards-red.png",  { as: "image" });
 
   // Fetch the decks and cards from the ATTT API
   const decks = await getNpcDecks();

@@ -7,7 +7,7 @@ export const metadata = {
 };
 
 export default async function NPCs() {
-  ReactDOM.preload("https://triad.raelys.com/images/cards/large.png", { as: "image" });
+  ReactDOM.preload("https://ffxivcollect.com/images/cards-large.png", { as: "image" });
 
   const npcs = await getNpcs();
 
